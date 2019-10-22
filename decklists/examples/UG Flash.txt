@@ -1,0 +1,24 @@
+3 Brazen Borrower (ELD) 39
+4 Brineborn Cutthroat (M20) 50
+4 Frilled Mystic (RNA) 174
+4 Nightpack Ambusher (M20) 185
+4 Spectral Sailor (M20) 76
+2 Wildborn Preserver (ELD) 182
+4 Oko, Thief of Crowns (ELD) 197
+6 Forest (XLN) 278
+9 Island (XLN) 265
+4 Breeding Pool (RNA) 246
+4 Temple of Mystery (M20) 255
+2 Mystical Dispute (ELD) 58
+1 Negate (RIX) 44
+2 Opt (XLN) 65
+2 Quench (RNA) 48
+4 Sinister Sabotage (GRN) 54
+1 Unsummon (M20) 78
+
+2 Mystical Dispute (ELD) 58
+2 Shifting Ceratops (M20) 194
+3 Aether Gust (M20) 42
+3 Negate (RIX) 44
+3 Veil of Summer (M20) 198
+2 Disdainful Stroke (GRN) 37
