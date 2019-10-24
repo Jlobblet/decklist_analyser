@@ -1,2 +1,5 @@
-__pycache__/*
-/decklists/*.txt
+*/__pycache__/*
+*.pyc
+*/decklists/*.txt
+*/aggregate/*.csv
+config.py
