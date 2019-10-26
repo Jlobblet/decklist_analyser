@@ -8,7 +8,7 @@ basics = {"Plains", "Island", "Swamp", "Mountain", "Forest"}
 
 def create_set(text):
     names = (
-        set(re.findall(decklist_line, decklist, flags=re.MULTILINE)) - basics
+        set(re.findall(decklist_line, text, flags=re.MULTILINE)) - basics
     )
     return names
 
