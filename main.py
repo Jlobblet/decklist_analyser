@@ -2,7 +2,7 @@ import argparse
 
 from modes import overlap, analysis
 
-FUNCTION_MAP = {"overlap": overlap.calculate_overlap, "analysis": lambda x: None}
+FUNCTION_MAP = {"overlap": overlap.calculate_overlap, "analysis": analysis.main}
 
 parser = argparse.ArgumentParser(description="Process some integers.")
 parser.add_argument("mode", choices=FUNCTION_MAP.keys())

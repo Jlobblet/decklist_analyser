@@ -3,10 +3,9 @@ from os import listdir
 from os.path import isfile, join
 
 from config.CONFIG import CONFIG
-from .functions import create_set
+from .functions import create_set_from_file
 
 decklist_directory = CONFIG["decklist_directory"]
-basics = {"Plains", "Island", "Swamp", "Mountain", "Forest"}
 
 
 def check_no_duplicates(*args):
@@ -25,5 +24,5 @@ def calculate_overlap():
         for _file in listdir(decklist_directory)
         if isfile(join(decklist_directory, _file))
     ]
-    set_decklists = [create_set(decklist) for decklist in decklists]
+    set_decklists = [create_set_from_file(decklist) for decklist in decklists]
     return check_no_duplicates(*set_decklists)
