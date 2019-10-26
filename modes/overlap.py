@@ -3,18 +3,10 @@ from os import listdir
 from os.path import isfile, join
 
 from config.CONFIG import CONFIG
+from .functions import create_set
 
 decklist_directory = CONFIG["decklist_directory"]
-decklist_line = r"^\d+[^\S\n\r]+([\w \-,/]*[^\s(\n])"
 basics = {"Plains", "Island", "Swamp", "Mountain", "Forest"}
-
-
-def create_set(file):
-    with open(join(decklist_directory, file)) as decklist:
-        names = (
-            set(re.findall(decklist_line, decklist.read(), flags=re.MULTILINE)) - basics
-        )
-    return names
 
 
 def check_no_duplicates(*args):
