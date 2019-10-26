@@ -11,7 +11,9 @@ basics = {"Plains", "Island", "Swamp", "Mountain", "Forest"}
 
 def create_set(file):
     with open(join(decklist_directory, file)) as decklist:
-        names = set(re.findall(decklist_line, decklist.read(), flags=re.MULTILINE)) - basics
+        names = (
+            set(re.findall(decklist_line, decklist.read(), flags=re.MULTILINE)) - basics
+        )
     return names
 
 
@@ -27,9 +29,9 @@ def check_no_duplicates(*args):
 
 def calculate_overlap():
     decklists = [
-        file
-        for file in listdir(decklist_directory)
-        if isfile(join(decklist_directory, file))
+        _file
+        for _file in listdir(decklist_directory)
+        if isfile(join(decklist_directory, _file))
     ]
     set_decklists = [create_set(decklist) for decklist in decklists]
     return check_no_duplicates(*set_decklists)
