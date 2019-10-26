@@ -1,4 +1,3 @@
-import regex as re
 from os import listdir
 from os.path import isfile, join
 
@@ -9,6 +8,19 @@ decklist_directory = CONFIG["decklist_directory"]
 
 
 def check_no_duplicates(*args):
+    """Take any number of sets and return the duplicates, by pair, in all of the sets.
+
+    *args is any number of sets containing any values. The union of each pair
+    of sets is generated and if nonempty appended to a dictionary. These are
+    numbered by the order the sets were provided in and then returned.
+    Parameters:
+    -----
+    *args: sets to check for duplicates.
+    Returns:
+    ------
+    duplicates: dict - keys are string of the form f"{index1}, {index2}" and
+    values are the union of those sets, if nonempty. Empty unions are omitted.
+    """
     duplicates = {
         f"{index1}, {index2}": args[index1] & args[index2]
         for index1 in range(len(args) - 1)
@@ -19,6 +31,16 @@ def check_no_duplicates(*args):
 
 
 def calculate_overlap():
+    """Open all the files in a given directory and then check all of them for
+    duplicate cards with each other.
+    Returns:
+    ------
+    duplicates: dict - keys are string of the form f"{index1}, {index2}" and
+    values are the union of those sets, if nonempty. Empty unions are omitted.
+    See also:
+    ------
+    check_no_duplicates
+    """
     decklists = [
         _file
         for _file in listdir(decklist_directory)
