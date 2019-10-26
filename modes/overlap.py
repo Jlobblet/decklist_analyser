@@ -5,7 +5,7 @@ from os.path import isfile, join
 from config.CONFIG import CONFIG
 
 decklist_directory = CONFIG["decklist_directory"]
-decklist_line = r"^\d+[^\S\n\r]+([\w \-,/]*[^ (\n])"
+decklist_line = r"^\d+[^\S\n\r]+([\w \-,/]*[^\s(\n])"
 basics = {"Plains", "Island", "Swamp", "Mountain", "Forest"}
 
 
