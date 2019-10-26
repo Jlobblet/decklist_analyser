@@ -2,7 +2,7 @@ from os.path import join
 
 import regex as re
 
-decklist_line = r"^\d+[^\S\n\r]+([\w \-,/]*[^\s(\n])"
+decklist_line = r"^\d+x?[^\S\n\r]+([\w \-,/]*[^\s(\n])"
 basics = {"Plains", "Island", "Swamp", "Mountain", "Forest"}
 
 
