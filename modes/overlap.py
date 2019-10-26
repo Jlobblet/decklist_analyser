@@ -17,7 +17,7 @@ def create_set(file):
 
 def check_no_duplicates(*args):
     duplicates = {
-        str(index1) + ", " + str(index2): args[index1] & args[index2]
+        f"{index1}, {index2}": args[index1] & args[index2]
         for index1 in range(len(args) - 1)
         for index2 in range(index1 + 1, len(args))
         if args[index1] & args[index2]
