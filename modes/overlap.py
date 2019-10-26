@@ -14,10 +14,10 @@ def check_no_duplicates(*args):
     of sets is generated and if nonempty appended to a dictionary. These are
     numbered by the order the sets were provided in and then returned.
     Parameters:
-    -----
+    -----------
     *args: sets to check for duplicates.
     Returns:
-    ------
+    --------
     duplicates: dict - keys are string of the form f"{index1}, {index2}" and
     values are the union of those sets, if nonempty. Empty unions are omitted.
     """

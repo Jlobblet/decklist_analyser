@@ -14,10 +14,10 @@ def create_set(text):
     """Take a multiline string and return a set of card names detected.
 
     Parameters:
-    ------
+    -----------
     text: str - text to analyse to find card names in.
     Returns:
-    ------
+    --------
     names: set - unordered set of detected names.
     """
     text = re.sub("['`]", "'", text)
