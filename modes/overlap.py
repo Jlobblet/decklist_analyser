@@ -5,29 +5,23 @@ from os.path import isfile, join
 from config.CONFIG import CONFIG
 
 decklist_directory = CONFIG["decklist_directory"]
-decklist_line = r"\d+ (?P<name>[\w -]+([^ (\n]))( \(.{3}\) \d{1,3})?"
+decklist_line = r"^\d+ ([\w \-,/]+(?:[^ (\n]))"
 basics = {"Plains", "Island", "Swamp", "Mountain", "Forest"}
 
 
 def create_set(file):
     with open(join(decklist_directory, file)) as decklist:
-        names = []
-        for line in decklist:
-            match = re.match(decklist_line, line)
-            if match is not None:
-                names.append(match.group("name"))
-    names = set(names) - basics
+        names = set(re.findall(decklist_line, decklist.read(), flags=re.MULTILINE)) - basics
     return names
 
 
 def check_no_duplicates(*args):
-    duplicates = dict(())
-    for index1 in range(len(args)):
-        for index2 in range(len(args)):
-            if index1 < index2:
-                intersection = args[index1] & args[index2]
-                if intersection:
-                    duplicates[str(index1) + ", " + str(index2)] = intersection
+    duplicates = {
+        str(index1) + ", " + str(index2): args[index1] & args[index2]
+        for index1 in range(len(args) - 1)
+        for index2 in range(index1 + 1, len(args))
+        if args[index1] & args[index2]
+    }
     return duplicates
 
 
