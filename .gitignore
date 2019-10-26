@@ -2,4 +2,4 @@
 **.pyc
 **/decklists/*.txt
 **/aggregate/*.csv
-**/config.py
+**/CONFIG.py
