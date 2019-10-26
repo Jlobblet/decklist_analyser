@@ -10,7 +10,7 @@ def read_raw_data(data_loc=data_loc):
     df = pd.read_csv(data_loc)
     df = df.dropna().reset_index().loc[:, ["Deck 1 List", "Deck 2 List", "Deck 3 List"]]
 
-    print(df.apply(create_set))
+    print(df.applymap(create_set))
 
     # print(df)
 
