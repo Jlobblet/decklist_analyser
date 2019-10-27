@@ -9,18 +9,21 @@ basics = CONFIG["basics"]
 
 
 def check_no_duplicates(*args):
-    """Take any number of sets and return the duplicates, by pair, in all of the sets.
+    """Take any number of sets and return the duplicates, by pair, in
+    all of the sets.
 
-    *args is any number of sets containing any values. The union of each pair
-    of sets is generated and if nonempty appended to a dictionary. These are
-    numbered by the order the sets were provided in and then returned.
+    *args is any number of sets containing any values. The union of each
+    pair of sets is generated and if nonempty appended to a dictionary.
+    These are numbered by the order the sets were provided in and then
+    returned.
     Parameters:
     -----------
     *args: sets to check for duplicates.
     Returns:
     --------
-    duplicates: dict - keys are string of the form f"{index1}, {index2}" and
-    values are the union of those sets, if nonempty. Empty unions are omitted.
+    duplicates: dict - keys are string of the form f"{index1}, {index2}"
+    and values are the union of those sets, if nonempty. Empty unions
+    are omitted.
     """
     duplicates = {
         f"{index1}, {index2}": args[index1] & args[index2]
@@ -32,12 +35,13 @@ def check_no_duplicates(*args):
 
 
 def calculate_overlap():
-    """Open all the files in a given directory and then check all of them for
-    duplicate cards with each other.
+    """Open all the files in a given directory and then check all of
+    them for duplicate cards with each other.
     Returns:
     ------
-    duplicates: dict - keys are string of the form f"{index1}, {index2}" and
-    values are the union of those sets, if nonempty. Empty unions are omitted.
+    duplicates: dict - keys are string of the form f"{index1}, {index2}"
+    and values are the union of those sets, if nonempty. Empty unions
+    are omitted.
     See also:
     ------
     check_no_duplicates
@@ -47,7 +51,5 @@ def calculate_overlap():
         for _file in listdir(decklist_directory)
         if isfile(join(decklist_directory, _file))
     ]
-    set_decklists = [
-        create_set_from_file(decklist) for decklist in decklists
-    ]
+    set_decklists = [create_set_from_file(decklist) for decklist in decklists]
     print(check_no_duplicates(*set_decklists))
