@@ -23,8 +23,8 @@ def create_set(text):
     text = re.sub("['`]", "'", text)
     names = (
         set(re.findall(decklist_line_1, text, flags=re.MULTILINE))
-        | set(re.findall(decklist_line_2, text, flags=re.MULTILINE)) - basics
-    )
+        | set(re.findall(decklist_line_2, text, flags=re.MULTILINE))
+    ) - basics
     names = {name.title() for name in names}
     return names
 
