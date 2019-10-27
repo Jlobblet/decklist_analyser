@@ -69,5 +69,24 @@ def main():
             if union:
                 G.add_edge(card1, card2, weight=len(union))
     G.vs["label"] = card_data_df["Card"].tolist()
+    G.vs["name"] = G.vs["label"]
     partition = lv.find_partition(G, lv.ModularityVertexPartition)
+
+    clusters = 0
+    for cluster in partition:
+        for card in cluster:
+            card_data_df.at[card, "Cluster"] = clusters
+        clusters += 1
+    G.vs["cluster"] = card_data_df["Cluster"].tolist()
+
+    for edge in G.es:
+        src_clus = card_data_df.at[edge.source, "Cluster"]
+        tar_clus = card_data_df.at[edge.target, "Cluster"]
+        if src_clus == tar_clus:
+            edge["interior"] = 1
+        else:
+            edge["interior"] = 0
+
+    print(card_data_df)
     ig.plot(partition)
+    G.save(r"C:\tmp\cards.graphml")
