@@ -15,6 +15,9 @@ class Logger(object):
         self.terminal = sys.stdout
         self.log = open(filepath, "a+")
 
+    def __del__(self):
+        self.log.close()
+
     def write(self, message):
         self.terminal.write(message)
         self.log.write(message)

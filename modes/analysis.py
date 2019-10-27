@@ -222,10 +222,26 @@ def main():
             print(f"Cluster {cluster}")
             authorities = (
                 filter_sets(card_data_df, {cluster}, "Cluster")
-                .sort_values(by="Authority Score")["Card"]
+                .sort_values(by="Authority Score", ascending=False)["Card"]
                 .head()
                 .reset_index(drop=True)
             )
-            print(pd.DataFrame({"Top Cards": authorities}))
-            print("=" * 20)
+            hubs = (
+                filter_sets(card_data_df, {cluster}, "Cluster")
+                .sort_values(by="Hub Score", ascending=False)["Card"]
+                .head()
+                .reset_index(drop=True)
+            )
+            top_count = (
+                filter_sets(card_data_df, {cluster}, "Cluster")
+                .sort_values(by="Count", ascending=False)["Card"]
+                .head()
+                .reset_index(drop=True)
+            )
+            print(
+                pd.DataFrame(
+                    {"Count": top_count, "Authority": authorities, "Hubs": hubs}
+                )
+            )
+            print("=" * 100)
     plt.show()
