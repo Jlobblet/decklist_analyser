@@ -61,4 +61,13 @@ def main():
         by=["Count", "Card"], inplace=True, ascending=[False, True]
     )
     card_data_df.reset_index(inplace=True)
-    print(card_data_df)
+    G = ig.Graph()
+    G.add_vertices(len(card_data_df.index))
+    for card1 in range(len(card_data_df.index) - 1):
+        for card2 in range(card1 + 1, len(card_data_df.index)):
+            union = card_data_df.at[card1, "Decks"] & card_data_df.at[card2, "Decks"]
+            if union:
+                G.add_edge(card1, card2, weight=len(union))
+    G.vs["label"] = card_data_df["Card"].tolist()
+    partition = lv.find_partition(G, lv.ModularityVertexPartition)
+    ig.plot(partition)
