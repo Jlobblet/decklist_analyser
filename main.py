@@ -8,4 +8,4 @@ parser = argparse.ArgumentParser()
 parser.add_argument("mode", choices=FUNCTION_MAP.keys())
 
 args = parser.parse_args()
-print(FUNCTION_MAP[args.mode]())
+FUNCTION_MAP[args.mode]()

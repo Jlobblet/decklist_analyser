@@ -7,7 +7,6 @@ from config.CONFIG import CONFIG
 decklist_directory = CONFIG["decklist_directory"]
 decklist_line_1 = r"^([\w '\-,/]*[^\s(\n]) x\d+"
 decklist_line_2 = r"^\d+x?[^\S\n\r]+([\w '\-,/]*[^\s(\n])"
-basics = CONFIG["basics"]
 
 
 def create_set(text):
@@ -21,10 +20,9 @@ def create_set(text):
     names: set - unordered set of detected names.
     """
     text = re.sub("['`]", "'", text)
-    names = (
-        set(re.findall(decklist_line_1, text, flags=re.MULTILINE))
-        | set(re.findall(decklist_line_2, text, flags=re.MULTILINE))
-    ) - basics
+    names = set(re.findall(decklist_line_1, text, flags=re.MULTILINE)) | set(
+        re.findall(decklist_line_2, text, flags=re.MULTILINE)
+    )
     names = {name.title() for name in names}
     return names
 
@@ -40,3 +38,11 @@ def create_set_from_file(dir):
     """
     with open(join(decklist_directory, dir)) as decklist:
         return create_set(decklist.read())
+
+
+def filter_sets(df, filter, field, whitelist=True):
+    if whitelist:
+        mask = df[field].map(lambda x: x & filter != set())
+    else:
+        mask = df[field].map(lambda x: x & filter == set())
+    return df[mask]

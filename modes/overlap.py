@@ -5,6 +5,7 @@ from config.CONFIG import CONFIG
 from .functions import create_set_from_file
 
 decklist_directory = CONFIG["decklist_directory"]
+basics = CONFIG["basics"]
 
 
 def check_no_duplicates(*args):
@@ -26,7 +27,7 @@ def check_no_duplicates(*args):
         for index1 in range(len(args) - 1)
         for index2 in range(index1 + 1, len(args))
         if args[index1] & args[index2]
-    }
+    } - basics
     return duplicates
 
 
@@ -47,4 +48,4 @@ def calculate_overlap():
         if isfile(join(decklist_directory, _file))
     ]
     set_decklists = [create_set_from_file(decklist) for decklist in decklists]
-    return check_no_duplicates(*set_decklists)
+    print(check_no_duplicates(*set_decklists))

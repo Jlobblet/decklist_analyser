@@ -5,7 +5,7 @@ import louvain as lv
 import matplotlib.pyplot as plt
 
 from config.CONFIG import CONFIG
-from .functions import create_set
+from .functions import create_set, create_set_from_file, filter_sets
 
 data_loc = r"data/aggregate/week1.csv"
 
@@ -85,12 +85,12 @@ def plot_number_clusters(card_data_df, G, resolution_range):
     plt.show()
 
 
-def create_partition(card_data_df, G):
+def create_partition(card_data_df, G, resolution_parameter=1):
     partition = lv.find_partition(
         G,
         lv.RBERVertexPartition,
         weights="weight",
-        resolution_parameter=1,
+        resolution_parameter=resolution_parameter,
         node_sizes=card_data_df["Count"].tolist(),
     )
 
@@ -151,6 +151,24 @@ def create_graphml(card_data_df, G, filepath):
     G.save(filepath)
 
 
+def classify_decklist(card_data_df, clusters, decklist):
+    hits = np.zeros(clusters)
+    copy_df = card_data_df.copy().set_index("Card")
+    for card in decklist:
+        card_clusters = copy_df.at[card, "Cluster"]
+        for cluster in card_clusters:
+            hits[cluster] += 1
+    hits /= sum(hits)
+    decks = set()
+    deck_percentage = 0
+    while deck_percentage < CONFIG["deck_percentage"]:
+        cat = hits.argmax()
+        decks.add(cat)
+        deck_percentage += hits[cat]
+        hits[cat] = 0
+    return decks
+
+
 def main():
     """Handle taking input and then producing output.
     """
@@ -162,9 +180,28 @@ def main():
 
     card_data_df = create_card_df(all_cards, df)
     G = create_graph(card_data_df)
-    plot_number_clusters(card_data_df, G, (0, 1))
-    partition, clusters = create_partition(card_data_df, G)
+    # plot_number_clusters(card_data_df, G, (0, 2))
+    partition, clusters = create_partition(card_data_df, G, 1.5)
     multi_cluster(card_data_df, G, clusters)
+    # ig.plot(partition, bbox=(4000, 2000))
 
+    # with pd.option_context("display.max_rows", None):
+    #     print(filter_sets(card_data_df, {0, 4}, "Cluster")["Card"])
+    #     print(card_data_df)
+
+    decks = [
+        classify_decklist(card_data_df, clusters, deck)
+        for deck in df.to_numpy().flatten()
+    ]
+    breakdown = [len([y for y in decks if x in y]) for x in range(clusters)]
+    plt.pie(
+        breakdown,
+        labels=[
+            f"{x}, {round(100 * breakdown[x]/sum(breakdown), 1)}%"
+            for x in range(clusters)
+        ],
+        counterclock=False,
+    )
+    plt.show()
     with pd.option_context("display.max_rows", None):
         print(card_data_df)
