@@ -76,22 +76,47 @@ def main():
     )
 
     clusters = 0
+    
+    card_data_df["Cluster"] = [set() for _ in card_data_df.index]
+    
     for cluster in partition:
         for card in cluster:
-            card_data_df.at[card, "Cluster"] = clusters
+            card_data_df.at[card, "Cluster"].add(clusters)
         clusters += 1
+        
     G.vs["cluster"] = card_data_df["Cluster"].tolist()
 
-    adjlist = G.get_adjlist()
-    for card in card_data_df.index:
-        adjlist_card = adjlist[card]
-        for adjcard in adjlist_card:
-            pass
+    
+    changed = True
+    
+    while changed:
+        changed = False
+        
+        copy_df = card_data_df.copy()
+        
+        adjlist = G.get_adjlist()
+        for card in copy_df.index:
+            adjlist_card = adjlist[card]
+            clus1 = copy_df.at[card, "Cluster"]
+            adjclus = np.zeros(clusters)
+            
+            for adjcard in adjlist_card:
+                clus2 = copy_df.at[adjcard, "Cluster"]
+                for cluster in clus2:
+                    adjclus[cluster] += 1
+            
+            clusfilter = [c in clus1 for c in range(clusters)]
+            
+            if np.sum(adjclus[clusfilter]) / np.sum(adjclus) < CONFIG["cluster_percentage"]:
+                adjclus[clusfilter] = 0
+                card_data_df.at[card, "Cluster"].add(np.argmax(adjclus))
+                changed = True
+                
 
     for edge in G.es:
         src_clus = card_data_df.at[edge.source, "Cluster"]
         tar_clus = card_data_df.at[edge.target, "Cluster"]
-        if src_clus == tar_clus:
+        if src_clus & tar_clus:
             edge["interior"] = 1
         else:
             edge["interior"] = 0
