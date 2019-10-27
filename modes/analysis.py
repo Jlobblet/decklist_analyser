@@ -42,17 +42,23 @@ def main():
     for index, row in df.iterrows():
         for deck in row:
             all_cards = all_cards | deck
-    card_data_df = pd.DataFrame(all_cards, columns=["Card"]).sort_values(by="Card")
+
+    card_data_df = pd.DataFrame(list(all_cards), columns=["Card"]).sort_values(
+        by="Card"
+    )
+    card_data_df.set_index("Card", inplace=True)
     card_data_df["Count"] = 0
-    card_data_df["Decks"] = [set(x) for x in np.empty((len(card_data_df), 0)).tolist()]
+    card_data_df["Decks"] = [set() for _ in range(len(card_data_df))]
+
     decks = df.values.flatten().tolist()
-    for card in card_data_df.index:
-        for i in range(len(decks)):
-            if card_data_df.at[card, "Card"] in decks[i]:
-                card_data_df.at[card, "Decks"] = card_data_df.at[card, "Decks"] | {i}
+
+    for i in range(len(decks)):
+        for card in decks[i]:
+            card_data_df.at[card, "Decks"].add(i)
+
     card_data_df["Count"] = card_data_df["Decks"].apply(len)
     card_data_df.sort_values(
         by=["Count", "Card"], inplace=True, ascending=[False, True]
     )
-    card_data_df = card_data_df.reset_index().drop(["index"], axis=1)
+    card_data_df.reset_index(inplace=True)
     print(card_data_df)
