@@ -37,9 +37,9 @@ def create_set(text):
     names: set - unordered set of detected names.
     """
     text = re.sub("['`]", "'", text)
-    names = set(re.findall(decklist_line_1, text, flags=re.MULTILINE)) | set(
-        re.findall(decklist_line_2, text, flags=re.MULTILINE)
-    )
+    names = set(
+        re.findall(decklist_line_1, text, flags=re.MULTILINE)
+    ) | set(re.findall(decklist_line_2, text, flags=re.MULTILINE))
     names = {name.title() for name in names}
     return names
 
