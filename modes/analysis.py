@@ -40,6 +40,19 @@ def read_raw_data(data_loc=data_loc):
 
 
 def create_card_df(all_cards, df):
+    """Take the set of all cards and all decklists and create a
+    DataFrame containing as columns Card, Number of Decks in and which
+    decks those are.
+    Parameters:
+    -----------
+    all_cards: set containing string for each card name detected for a
+    give data set.
+
+    df: pandas DataFrame containing all decklists.
+    Returns:
+    --------
+    card_data_df: pandas DataFrame as described above.
+    """
     card_data_df = pd.DataFrame(list(all_cards), columns=["Card"]).sort_values(
         by="Card"
     )
@@ -62,6 +75,20 @@ def create_card_df(all_cards, df):
 
 
 def create_graph(card_data_df):
+    """Take a DataFrame containing card name and deck membership and
+    create from it an igraph Graph.
+    Parameters:
+    -----------
+    card_data_df: pandas DataFrame containing as columns card name and
+    the decks that each card belongs to as a set.
+    Returns:
+    --------
+    G: igraph Graph containing each card and an edge between each card
+    weighted by the number of decks they are in together, if nonzero.
+    See also:
+    ---------
+    create_card_df: function that creates card_data_df.
+    """
     G = ig.Graph()
     G.add_vertices(len(card_data_df.index))
     for card1 in range(len(card_data_df.index) - 1):
@@ -76,6 +103,24 @@ def create_graph(card_data_df):
 
 
 def plot_number_clusters(card_data_df, G, resolution_range):
+    """Take a card_data_df and the graph that represents it as well as
+    a range of resolution parameters, and plot a graph showing how the
+    number of clusters changes with resolution parameter.
+    Parameters:
+    -----------
+    card_data_df: pandas DataFrame containing as colu.mns card name and
+    the decks that each card belongs to as a set.
+
+    G: igraph Graph representation of card_data_df.
+
+    resolution_range: tuple of two values to vary resolution_parameter
+    between.
+    See also:
+    ---------
+    create_card_df: function that creates card_data_df.
+
+    create_graph: function that creates G.
+    """
     optimiser = lv.Optimiser()
     profile = optimiser.resolution_profile(
         G,
@@ -92,6 +137,32 @@ def plot_number_clusters(card_data_df, G, resolution_range):
 
 
 def create_partition(card_data_df, G, resolution_parameter=1):
+    """Take a card_data_df and the graph that represents it and create
+    clusters based on lv.RBERVertexPartition.
+    Parameters:
+    -----------
+    card_data_df: pandas DataFrame containing as colu.mns card name and
+    the decks that each card belongs to as a set.
+
+    G: igraph Graph representation of card_data_df.
+
+    resolution_parameter: float to pass to the RBERVertexPartition as
+    represented by γ in the quality function
+      Q=∑(ij) (A_ij−γp)δ(σi,σj).
+    Returns:
+    --------
+    partition: the partition created by lv.find_partition.
+
+    clusters: the number of clusters detected.
+    See also:
+    ---------
+    create_card_df: function that creates card_data_df.
+
+    create_graph: function that creates G.
+
+    https://louvain-igraph.readthedocs.io/en/latest/reference.html#rbervertexpartition:
+    information on the algorithm used.
+    """
     partition = lv.find_partition(
         G,
         lv.RBERVertexPartition,
@@ -115,6 +186,25 @@ def create_partition(card_data_df, G, resolution_parameter=1):
 
 
 def multi_cluster(card_data_df, G, clusters):
+    """Take cards that have a high exterior weight and put them into
+    additional clusters.
+    Parameters:
+    -----------
+    card_data_df: pandas DataFrame containing as colu.mns card name and
+    the decks that each card belongs to as a set.
+
+    G: igraph Graph representation of card_data_df.
+
+    clusters: int number of clusters detected.
+    See also:
+    ---------
+    create_card_df: function that creates card_data_df.
+
+    create_graph: function that creates G.
+
+    CONFIG["cluster_percentage"]: percentage of weighted connections for
+    each node that must be a member of its clusters set.
+    """
     changed = True
 
     while changed:
@@ -148,6 +238,21 @@ def multi_cluster(card_data_df, G, clusters):
 
 
 def create_graphml(card_data_df, G, filepath):
+    """Save the graph to a given location.
+    Parameters:
+    -----------
+    card_data_df: pandas DataFrame containing as colu.mns card name and
+    the decks that each card belongs to as a set.
+
+    G: igraph Graph representation of card_data_df.
+
+    filepath: string or filepath object to save the graph to.
+    See also:
+    ---------
+    create_card_df: function that creates card_data_df.
+
+    create_graph: function that creates G.
+    """
     for edge in G.es:
         src_clus = card_data_df.at[edge.source, "Cluster"]
         tar_clus = card_data_df.at[edge.target, "Cluster"]
@@ -159,6 +264,26 @@ def create_graphml(card_data_df, G, filepath):
 
 
 def classify_decklist(card_data_df, clusters, decklist):
+    """
+    Parameters:
+    -----------
+    card_data_df: pandas DataFrame containing as colu.mns card name and
+    the decks that each card belongs to as a set.
+
+    clusters: int number of clusters detected.
+
+    decklist: set containing string names of cards.
+    Returns:
+    --------
+    decks: set containing clusters that contain a given percentage of
+    members of decklist.
+    See also:
+    ---------
+    create_card_df: function that creates card_data_df.
+
+    CONFIG["deck_percentage"]: percentage of deck that has to be
+    accounted for.
+    """
     hits = np.zeros(clusters)
     copy_df = card_data_df.copy().set_index("Card")
     for card in decklist:
@@ -177,7 +302,7 @@ def classify_decklist(card_data_df, clusters, decklist):
 
 
 def main():
-    """Handle taking input and then producing output.
+    """Run the functions provided in order to produce summary of data.
     """
     df = read_raw_data()
     all_cards = set()
