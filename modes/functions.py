@@ -1,3 +1,4 @@
+import sys
 from os.path import join
 
 import regex as re
@@ -7,6 +8,19 @@ from config.CONFIG import CONFIG
 decklist_directory = CONFIG["decklist_directory"]
 decklist_line_1 = r"^([\w '\-,/]*[^\s(\n]) x\d+"
 decklist_line_2 = r"^\d+x?[^\S\n\r]+([\w '\-,/]*[^\s(\n])"
+
+
+class Logger(object):
+    def __init__(self, filepath):
+        self.terminal = sys.stdout
+        self.log = open(filepath, "a+")
+
+    def write(self, message):
+        self.terminal.write(message)
+        self.log.write(message)
+
+    def flush(self):
+        pass
 
 
 def create_set(text):

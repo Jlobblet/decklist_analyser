@@ -3,3 +3,4 @@
 **/decklists/*.txt
 **/aggregate/*.csv
 **/CONFIG.py
+logs/*

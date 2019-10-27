@@ -1,3 +1,6 @@
+import sys
+import datetime
+
 import numpy as np
 import pandas as pd
 import igraph as ig
@@ -5,8 +8,11 @@ import louvain as lv
 import matplotlib.pyplot as plt
 
 from config.CONFIG import CONFIG
-from .functions import create_set, create_set_from_file, filter_sets
+from .functions import Logger, create_set, filter_sets
 
+sys.stdout = Logger(
+    CONFIG["log_location"].format(datetime.date.today().strftime("%b-%d-%Y"))
+)
 data_loc = r"data/aggregate/week1.csv"
 
 
@@ -95,8 +101,9 @@ def create_partition(card_data_df, G, resolution_parameter=1):
     )
 
     clusters = 0
-
     card_data_df["Cluster"] = [set() for _ in card_data_df.index]
+    card_data_df["Hub Score"] = G.hub_score("weight")
+    card_data_df["Authority Score"] = G.authority_score("weight")
 
     for cluster in partition:
         for card in cluster:
@@ -194,14 +201,31 @@ def main():
         for deck in df.to_numpy().flatten()
     ]
     breakdown = [len([y for y in decks if x in y]) for x in range(clusters)]
-    plt.pie(
+    fig, ax = plt.subplots(figsize=(6, 3), subplot_kw=dict(aspect="equal"))
+    wedges, texts = plt.pie(
         breakdown,
         labels=[
-            f"{x}, {round(100 * breakdown[x]/sum(breakdown), 1)}%"
-            for x in range(clusters)
+            f"{round(100 * breakdown[x]/sum(breakdown), 1)}%" for x in range(clusters)
         ],
         counterclock=False,
     )
-    plt.show()
+    ax.legend(
+        wedges,
+        [f"{x}" for x in range(clusters)],
+        title="Predominant Clusters",
+        loc="center left",
+        bbox_to_anchor=(1, 0, 0.5, 1),
+    )
     with pd.option_context("display.max_rows", None):
-        print(card_data_df)
+        print("Cluster overview:")
+        for cluster in range(clusters):
+            print(f"Cluster {cluster}")
+            authorities = (
+                filter_sets(card_data_df, {cluster}, "Cluster")
+                .sort_values(by="Authority Score")["Card"]
+                .head()
+                .reset_index(drop=True)
+            )
+            print(pd.DataFrame({"Top Cards": authorities}))
+            print("=" * 20)
+    plt.show()
