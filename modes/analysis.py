@@ -13,10 +13,9 @@ from .functions import Logger, create_set, filter_sets
 sys.stdout = Logger(
     CONFIG["log_location"].format(datetime.date.today().strftime("%b-%d-%Y"))
 )
-data_loc = r"data/aggregate/week1.csv"
 
 
-def read_raw_data(data_loc=data_loc):
+def read_raw_data(data_loc=CONFIG["aggregate_data_loc"]):
     """Collect data from a csv file to locate decklists in and return DataFrame
     of decklists.
     Parameters:
