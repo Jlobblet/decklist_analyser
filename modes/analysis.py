@@ -32,17 +32,7 @@ def read_raw_data(data_loc=data_loc):
     return df
 
 
-def main():
-    """Handle taking input and then producing output.
-    """
-    df = read_raw_data()
-    all_cards = set()
-    # print(all_cards)
-    # raise Exception
-    for index, row in df.iterrows():
-        for deck in row:
-            all_cards = all_cards | deck
-
+def create_card_df(all_cards, df):
     card_data_df = pd.DataFrame(list(all_cards), columns=["Card"]).sort_values(
         by="Card"
     )
@@ -61,6 +51,10 @@ def main():
         by=["Count", "Card"], inplace=True, ascending=[False, True]
     )
     card_data_df.reset_index(inplace=True)
+    return card_data_df
+
+
+def create_graph(card_data_df):
     G = ig.Graph()
     G.add_vertices(len(card_data_df.index))
     for card1 in range(len(card_data_df.index) - 1):
@@ -70,49 +64,62 @@ def main():
                 G.add_edge(card1, card2, weight=len(union))
     G.vs["label"] = card_data_df["Card"].tolist()
     G.vs["name"] = G.vs["label"]
+    G.simplify(multiple=True, loops=True, combine_edges=sum)
+    return G
 
+
+def create_partition(card_data_df, G):
     partition = lv.find_partition(
-        G, lv.CPMVertexPartition, weights="weight", resolution_parameter=1
+        G, lv.RBERVertexPartition, weights="weight", resolution_parameter=1
     )
 
     clusters = 0
-    
+
     card_data_df["Cluster"] = [set() for _ in card_data_df.index]
-    
+
     for cluster in partition:
         for card in cluster:
             card_data_df.at[card, "Cluster"].add(clusters)
         clusters += 1
-        
-    G.vs["cluster"] = card_data_df["Cluster"].tolist()
 
-    
+    G.vs["cluster"] = card_data_df["Cluster"].tolist()
+    return partition, clusters
+
+
+def multi_cluster(card_data_df, G, clusters):
     changed = True
-    
+
     while changed:
         changed = False
-        
+
         copy_df = card_data_df.copy()
-        
+
         adjlist = G.get_adjlist()
         for card in copy_df.index:
             adjlist_card = adjlist[card]
             clus1 = copy_df.at[card, "Cluster"]
+            clusfilter = [c in clus1 for c in range(clusters)]
             adjclus = np.zeros(clusters)
-            
+            # adjclus[clusfilter] = len(adjlist_card)
+
             for adjcard in adjlist_card:
                 clus2 = copy_df.at[adjcard, "Cluster"]
                 for cluster in clus2:
-                    adjclus[cluster] += 1
-            
-            clusfilter = [c in clus1 for c in range(clusters)]
-            
-            if np.sum(adjclus[clusfilter]) / np.sum(adjclus) < CONFIG["cluster_percentage"]:
+                    adjclus[cluster] += G.es.select(_within=(card, adjcard))[0][
+                        "weight"
+                    ]
+
+            if (
+                np.sum(adjclus[clusfilter]) / np.sum(adjclus)
+                < CONFIG["cluster_percentage"]
+            ):
                 adjclus[clusfilter] = 0
                 card_data_df.at[card, "Cluster"].add(np.argmax(adjclus))
                 changed = True
-                
+    # return card_data_df
 
+
+def create_graphml(card_data_df, G, filepath):
     for edge in G.es:
         src_clus = card_data_df.at[edge.source, "Cluster"]
         tar_clus = card_data_df.at[edge.target, "Cluster"]
@@ -120,6 +127,22 @@ def main():
             edge["interior"] = 1
         else:
             edge["interior"] = 0
-    # print(card_data_df)
-    ig.plot(partition)
-    G.save(r"C:\tmp\cards.graphml")
+    G.save(filepath)
+
+
+def main():
+    """Handle taking input and then producing output.
+    """
+    df = read_raw_data()
+    all_cards = set()
+    for index, row in df.iterrows():
+        for deck in row:
+            all_cards = all_cards | deck
+
+    card_data_df = create_card_df(all_cards, df)
+    G = create_graph(card_data_df)
+    partition, clusters = create_partition(card_data_df, G)
+    multi_cluster(card_data_df, G, clusters)
+
+    with pd.option_context("display.max_rows", None):
+        print(card_data_df)
