@@ -128,7 +128,7 @@ def multi_cluster(card_data_df, G, clusters):
                 for cluster in clus2:
                     adjclus[cluster] += G.es.select(_within=(card, adjcard))[0][
                         "weight"
-                    ]
+                    ] / len(clus2)
 
             if (
                 np.sum(adjclus[clusfilter]) / np.sum(adjclus)
