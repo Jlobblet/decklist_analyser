@@ -70,7 +70,10 @@ def main():
                 G.add_edge(card1, card2, weight=len(union))
     G.vs["label"] = card_data_df["Card"].tolist()
     G.vs["name"] = G.vs["label"]
-    partition = lv.find_partition(G, lv.ModularityVertexPartition)
+
+    partition = lv.find_partition(
+        G, lv.CPMVertexPartition, weights="weight", resolution_parameter=1
+    )
 
     clusters = 0
     for cluster in partition:
@@ -79,6 +82,12 @@ def main():
         clusters += 1
     G.vs["cluster"] = card_data_df["Cluster"].tolist()
 
+    adjlist = G.get_adjlist()
+    for card in card_data_df.index:
+        adjlist_card = adjlist[card]
+        for adjcard in adjlist_card:
+            pass
+
     for edge in G.es:
         src_clus = card_data_df.at[edge.source, "Cluster"]
         tar_clus = card_data_df.at[edge.target, "Cluster"]
@@ -86,7 +95,6 @@ def main():
             edge["interior"] = 1
         else:
             edge["interior"] = 0
-
-    print(card_data_df)
+    # print(card_data_df)
     ig.plot(partition)
     G.save(r"C:\tmp\cards.graphml")
