@@ -217,6 +217,8 @@ def main():
         bbox_to_anchor=(1, 0, 0.5, 1),
     )
     with pd.option_context("display.max_rows", None):
+        print(f"Full df: {card_data_df}")
+        print("=" * 100)
         print("Cluster overview:")
         for cluster in range(clusters):
             print(f"Cluster {cluster}")
