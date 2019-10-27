@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import igraph as ig
 import louvain as lv
+import matplotlib.pyplot as plt
 
 from config.CONFIG import CONFIG
 from .functions import create_set
@@ -68,9 +69,29 @@ def create_graph(card_data_df):
     return G
 
 
+def plot_number_clusters(card_data_df, G, resolution_range):
+    optimiser = lv.Optimiser()
+    profile = optimiser.resolution_profile(
+        G,
+        lv.RBERVertexPartition,
+        resolution_range=resolution_range,
+        node_sizes=card_data_df["Count"].tolist(),
+    )
+    x = np.linspace(resolution_range[0], resolution_range[1], len(profile))
+    y = np.array([len(partition) for partition in profile])
+    plt.plot(x, y)
+    plt.xlabel("resolution_parameter")
+    plt.ylabel("Number of clusters")
+    plt.show()
+
+
 def create_partition(card_data_df, G):
     partition = lv.find_partition(
-        G, lv.RBERVertexPartition, weights="weight", resolution_parameter=1
+        G,
+        lv.RBERVertexPartition,
+        weights="weight",
+        resolution_parameter=1,
+        node_sizes=card_data_df["Count"].tolist(),
     )
 
     clusters = 0
@@ -141,6 +162,7 @@ def main():
 
     card_data_df = create_card_df(all_cards, df)
     G = create_graph(card_data_df)
+    plot_number_clusters(card_data_df, G, (0, 1))
     partition, clusters = create_partition(card_data_df, G)
     multi_cluster(card_data_df, G, clusters)
 
