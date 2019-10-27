@@ -11,27 +11,33 @@ from config.CONFIG import CONFIG
 from .functions import Logger, create_set, filter_sets
 
 sys.stdout = Logger(
-    CONFIG["log_location"].format(datetime.date.today().strftime("%b-%d-%Y"))
+    CONFIG["log_location"].format(
+        datetime.date.today().strftime("%b-%d-%Y")
+    )
 )
 
 
 def read_raw_data(data_loc=CONFIG["aggregate_data_loc"]):
-    """Collect data from a csv file to locate decklists in and return DataFrame
-    of decklists.
+    """Collect data from a csv file to locate decklists in and return
+    DataFrame of decklists.
     Parameters:
     -----------
     data_loc: string or filepath - location of the csv file to open.
     Returns:
     --------
-    pandas DataFrame containing three columns ["Deck 1 List", "Deck 2 List",
-    "Deck 3 List"], each of which contains a set detailing each card in that
-    decklist as detected by create_set.
+    pandas DataFrame containing three columns ["Deck 1 List",
+    "Deck 2 List", "Deck 3 List"], each of which contains a set
+    detailing each card in that decklist as detected by create_set.
     See also:
     ---------
     create_set
     """
     df = pd.read_csv(data_loc)
-    df = df.dropna().reset_index().loc[:, ["Deck 1 List", "Deck 2 List", "Deck 3 List"]]
+    df = (
+        df.dropna()
+        .reset_index()
+        .loc[:, ["Deck 1 List", "Deck 2 List", "Deck 3 List"]]
+    )
     df = df.applymap(create_set)
 
     # print(df)
@@ -52,9 +58,9 @@ def create_card_df(all_cards, df):
     --------
     card_data_df: pandas DataFrame as described above.
     """
-    card_data_df = pd.DataFrame(list(all_cards), columns=["Card"]).sort_values(
-        by="Card"
-    )
+    card_data_df = pd.DataFrame(
+        list(all_cards), columns=["Card"]
+    ).sort_values(by="Card")
     card_data_df.set_index("Card", inplace=True)
     card_data_df["Count"] = 0
     card_data_df["Decks"] = [set() for _ in range(len(card_data_df))]
@@ -92,7 +98,10 @@ def create_graph(card_data_df):
     G.add_vertices(len(card_data_df.index))
     for card1 in range(len(card_data_df.index) - 1):
         for card2 in range(card1 + 1, len(card_data_df.index)):
-            union = card_data_df.at[card1, "Decks"] & card_data_df.at[card2, "Decks"]
+            union = (
+                card_data_df.at[card1, "Decks"]
+                & card_data_df.at[card2, "Decks"]
+            )
             if union:
                 G.add_edge(card1, card2, weight=len(union))
     G.vs["label"] = card_data_df["Card"].tolist()
@@ -127,7 +136,9 @@ def plot_number_clusters(card_data_df, G, resolution_range):
         resolution_range=resolution_range,
         node_sizes=card_data_df["Count"].tolist(),
     )
-    x = np.linspace(resolution_range[0], resolution_range[1], len(profile))
+    x = np.linspace(
+        resolution_range[0], resolution_range[1], len(profile)
+    )
     y = np.array([len(partition) for partition in profile])
     plt.plot(x, y)
     plt.xlabel("resolution_parameter")
@@ -222,9 +233,9 @@ def multi_cluster(card_data_df, G, clusters):
             for adjcard in adjlist_card:
                 clus2 = copy_df.at[adjcard, "Cluster"]
                 for cluster in clus2:
-                    adjclus[cluster] += G.es.select(_within=(card, adjcard))[0][
-                        "weight"
-                    ] / len(clus2)
+                    adjclus[cluster] += G.es.select(
+                        _within=(card, adjcard)
+                    )[0]["weight"] / len(clus2)
 
             if (
                 np.sum(adjclus[clusfilter]) / np.sum(adjclus)
@@ -324,12 +335,17 @@ def main():
         classify_decklist(card_data_df, clusters, deck)
         for deck in df.to_numpy().flatten()
     ]
-    breakdown = [len([y for y in decks if x in y]) for x in range(clusters)]
-    fig, ax = plt.subplots(figsize=(6, 3), subplot_kw=dict(aspect="equal"))
+    breakdown = [
+        len([y for y in decks if x in y]) for x in range(clusters)
+    ]
+    fig, ax = plt.subplots(
+        figsize=(6, 3), subplot_kw=dict(aspect="equal")
+    )
     wedges, texts = plt.pie(
         breakdown,
         labels=[
-            f"{round(100 * breakdown[x]/sum(breakdown), 1)}%" for x in range(clusters)
+            f"{round(100 * breakdown[x]/sum(breakdown), 1)}%"
+            for x in range(clusters)
         ],
         counterclock=False,
     )
@@ -348,7 +364,9 @@ def main():
             print(f"Cluster {cluster}")
             authorities = (
                 filter_sets(card_data_df, {cluster}, "Cluster")
-                .sort_values(by="Authority Score", ascending=False)["Card"]
+                .sort_values(by="Authority Score", ascending=False)[
+                    "Card"
+                ]
                 .head()
                 .reset_index(drop=True)
             )
@@ -366,7 +384,11 @@ def main():
             )
             print(
                 pd.DataFrame(
-                    {"Count": top_count, "Authority": authorities, "Hubs": hubs}
+                    {
+                        "Count": top_count,
+                        "Authority": authorities,
+                        "Hubs": hubs,
+                    }
                 )
             )
             print("=" * 100)
