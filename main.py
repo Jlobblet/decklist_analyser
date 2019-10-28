@@ -8,7 +8,16 @@ FUNCTION_MAP = {
 }
 
 parser = argparse.ArgumentParser()
-parser.add_argument("mode", choices=FUNCTION_MAP.keys())
+parser.add_argument(
+    "--mode", "-m", type=str, required=True, choices=FUNCTION_MAP.keys()
+)
+group = parser.add_mutually_exclusive_group()
+group.add_argument("--profile", "-p", type=float, nargs=2)
+group.add_argument("--resolution_parameter", "-r", type=float)
 
 args = parser.parse_args()
-FUNCTION_MAP[args.mode]()
+ARG_MAP = {
+    "overlap": tuple(),
+    "analysis": (args.profile, args.resolution_parameter),
+}
+FUNCTION_MAP[args.mode](*ARG_MAP[args.mode])

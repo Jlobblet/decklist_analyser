@@ -8,8 +8,14 @@ import louvain as lv
 import matplotlib.pyplot as plt
 
 from config.CONFIG import CONFIG
-from .functions import Logger, create_set, filter_sets
+from .functions import (
+    Logger,
+    create_set,
+    filter_sets,
+    get_terminal_size,
+)
 
+columns, rows = get_terminal_size()
 sys.stdout = Logger(
     CONFIG["log_location"].format(
         datetime.date.today().strftime("%b-%d-%Y")
@@ -311,19 +317,27 @@ def classify_decklist(card_data_df, clusters, decklist):
     return decks
 
 
-def main():
-    """Run the functions provided in order to produce summary of data.
-    """
-    df = read_raw_data()
-    all_cards = set()
-    for index, row in df.iterrows():
-        for deck in row:
-            all_cards = all_cards | deck
+def analysis(df, card_data_df, G, resolution_parameter):
+    """Create % breakdown of what decks are being played.
+    Parameters:
+    -----------
+    df: pandas DataFrame containing all decklists.
 
-    card_data_df = create_card_df(all_cards, df)
-    G = create_graph(card_data_df)
-    # plot_number_clusters(card_data_df, G, (0, 2))
-    partition, clusters = create_partition(card_data_df, G, 1.5)
+    card_data_df: pandas DataFrame containing as colu.mns card name and
+    the decks that each card belongs to as a set.
+
+    G: igraph Graph representation of card_data_df.
+    See also:
+    ---------
+    create_partition
+
+    multi_cluster
+
+    classify_decklist
+    """
+    partition, clusters = create_partition(
+        card_data_df, G, resolution_parameter
+    )
     multi_cluster(card_data_df, G, clusters)
     # ig.plot(partition, bbox=(4000, 2000))
 
@@ -339,26 +353,45 @@ def main():
         len([y for y in decks if x in y]) for x in range(clusters)
     ]
     fig, ax = plt.subplots(
-        figsize=(6, 3), subplot_kw=dict(aspect="equal")
+        figsize=(6, 3), subplot_kw={"aspect": "equal"}
     )
     wedges, texts = plt.pie(
-        breakdown,
-        labels=[
-            f"{round(100 * breakdown[x]/sum(breakdown), 1)}%"
-            for x in range(clusters)
-        ],
-        counterclock=False,
+        breakdown, counterclock=False, wedgeprops={"width": 0.5}
     )
-    ax.legend(
-        wedges,
-        [f"{x}" for x in range(clusters)],
-        title="Predominant Clusters",
-        loc="center left",
-        bbox_to_anchor=(1, 0, 0.5, 1),
-    )
+    bbox_props = {
+        "boxstyle": "square,pad=0.3",
+        "fc": "w",
+        "ec": "k",
+        "lw": 0.72,
+    }
+    kw = {
+        "arrowprops": {"arrowstyle": "-"},
+        "bbox": bbox_props,
+        "zorder": 0,
+        "va": "center",
+    }
+
+    for i, p in enumerate(wedges):
+        ang = (p.theta2 - p.theta1) / 2.0 + p.theta1
+        y = np.sin(np.deg2rad(ang))
+        x = np.cos(np.deg2rad(ang))
+        # horizontalalignment = {-1: "right", 1: "left"}[int(np.sign(x))]
+        horizontalalignment = "center"
+        connectionstyle = "angle,angleA=0,angleB={}".format(ang)
+        kw["arrowprops"].update({"connectionstyle": connectionstyle})
+        ax.annotate(
+            f"{i}\n{round(100 * breakdown[i]/sum(breakdown), 1)}%",
+            xy=(x, y),
+            xytext=(1.35 * np.sign(x), 1.4 * y),
+            horizontalalignment=horizontalalignment,
+            **kw,
+        )
+
     with pd.option_context("display.max_rows", None):
+        print({x: breakdown[x] for x in range(len(breakdown))})
+        print("=" * columns)
         print(f"Full df: {card_data_df}")
-        print("=" * 100)
+        print("=" * columns)
         print("Cluster overview:")
         for cluster in range(clusters):
             print(f"Cluster {cluster}")
@@ -391,5 +424,33 @@ def main():
                     }
                 )
             )
-            print("=" * 100)
+            print("=" * columns)
     plt.show()
+
+
+def meta_analysis(card_data_df, G, profile):
+    """Wrapper for plot_number_clusters."""
+    if profile[0] >= profile[1]:
+        raise ValueError(
+            f"The first profile value must be smaller than the second.\nPassed values: {profile[0]}, {profile[1]}"
+        )
+    plot_number_clusters(card_data_df, G, (profile[0], profile[1]))
+
+
+def main(profile, resolution_parameter):
+    """Run the functions provided in order to produce summary of data.
+    """
+    df = read_raw_data()
+    all_cards = set()
+    for index, row in df.iterrows():
+        for deck in row:
+            all_cards = all_cards | deck
+
+    card_data_df = create_card_df(all_cards, df)
+    G = create_graph(card_data_df)
+    if profile:
+        meta_analysis(card_data_df, G, profile)
+    else:
+        if resolution_parameter is None:
+            resolution_parameter = 1
+        analysis(df, card_data_df, G, resolution_parameter)

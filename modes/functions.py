@@ -1,4 +1,5 @@
 import sys
+import os
 from os.path import join
 
 import regex as re
@@ -24,6 +25,18 @@ class Logger(object):
 
     def flush(self):
         pass
+
+
+def get_terminal_size(fallback=(72, 24)):
+    for i in range(0, 3):
+        try:
+            columns, rows = os.get_terminal_size(i)
+        except OSError:
+            continue
+        break
+    else:
+        columns, rows = fallback
+    return columns, rows
 
 
 def create_set(text):
