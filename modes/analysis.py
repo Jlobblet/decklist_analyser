@@ -197,7 +197,6 @@ def create_partition(card_data_df, G, resolution_parameter=1):
             card_data_df.at[card, "Cluster"].add(clusters)
         clusters += 1
 
-    G.vs["cluster"] = card_data_df["Cluster"].tolist()
     return partition, clusters
 
 
@@ -317,7 +316,7 @@ def classify_decklist(card_data_df, clusters, decklist):
     return decks
 
 
-def analysis(df, card_data_df, G, resolution_parameter):
+def analysis(df, card_data_df, G, resolution_parameter, graph):
     """Create % breakdown of what decks are being played.
     Parameters:
     -----------
@@ -338,12 +337,15 @@ def analysis(df, card_data_df, G, resolution_parameter):
     partition, clusters = create_partition(
         card_data_df, G, resolution_parameter
     )
+    if graph:
+        ig.plot(partition, bbox=(4000, 2000))
+        G.vs["cluster"] = [
+            item
+            for sublist in card_data_df["Cluster"].tolist()
+            for item in sublist
+        ]
+        create_graphml(card_data_df, G, CONFIG["graphml_location"])
     multi_cluster(card_data_df, G, clusters)
-    # ig.plot(partition, bbox=(4000, 2000))
-
-    # with pd.option_context("display.max_rows", None):
-    #     print(filter_sets(card_data_df, {0, 4}, "Cluster")["Card"])
-    #     print(card_data_df)
 
     decks = [
         classify_decklist(card_data_df, clusters, deck)
@@ -437,7 +439,7 @@ def meta_analysis(card_data_df, G, profile):
     plot_number_clusters(card_data_df, G, (profile[0], profile[1]))
 
 
-def main(profile, resolution_parameter):
+def main(profile, resolution_parameter, graph):
     """Run the functions provided in order to produce summary of data.
     """
     df = read_raw_data()
@@ -453,4 +455,4 @@ def main(profile, resolution_parameter):
     else:
         if resolution_parameter is None:
             resolution_parameter = 1
-        analysis(df, card_data_df, G, resolution_parameter)
+        analysis(df, card_data_df, G, resolution_parameter, graph)

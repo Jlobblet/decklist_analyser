@@ -4,3 +4,4 @@
 **/aggregate/*.csv
 **/CONFIG.py
 logs/*
+output/*

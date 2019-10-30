@@ -52,6 +52,7 @@ def calculate_overlap():
         for _file in listdir(decklist_directory)
         if isfile(join(decklist_directory, _file))
     ]
+    print(f"Found decklists: \n{decklists}")
     set_decklists = [
         create_set_from_file(decklist) for decklist in decklists
     ]
