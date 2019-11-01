@@ -1,0 +1,7 @@
+regex
+numpy
+pandas
+pycairo
+python-igraph
+louvain
+matplotlib
