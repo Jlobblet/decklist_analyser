@@ -53,17 +53,31 @@ to avoid ambiguity, but depending on your installation of Python it may
 be `python`.
 Running `python3 main.py -h` produces the following:
 ```
-usage: main.py [-h] --mode {overlap,analysis}
-               [--profile PROFILE PROFILE | --resolution_parameter RESOLUTION_PARAMETER]
-               [--graph] [--no-lands]
+usage: main.py [-h] {overlap,analysis} ...
+
+optional arguments:
+  -h, --help          show this help message and exit
+
+mode:
+  {overlap,analysis}  Whether the program runs on overlap or analysis: overlap
+                      - Discover all files in the decklist_directory specified
+                      by CONFIG.py and return the cards that they share.
+                      analysis - Cluster decklists
+```
+`python3 main.py overlap -h` has no additional arguments:
+```
+usage: main.py overlap [-h]
+
+optional arguments:
+  -h, --help  show this help message and exit
+```
+`python3 main.py analysis -h` produces:
+```usage: main.py analysis [-h]
+                        [--profile PROFILE PROFILE | --resolution_parameter RESOLUTION_PARAMETER]
+                        [--graph] [--no-lands] [--label]
 
 optional arguments:
   -h, --help            show this help message and exit
-  --mode {overlap,analysis}, -m {overlap,analysis}
-                        Whether the program runs on overlap or analysis:
-                        overlap - Discover all files in the decklist_directory
-                        specified by CONFIG.py and return the cards that they
-                        share. analysis - Cluster decklists
   --profile PROFILE PROFILE, -p PROFILE PROFILE
                         Run a profile and create a graph of number of clusters
                         against resolution_parameter. The lower and upper
@@ -76,7 +90,11 @@ optional arguments:
                         in graphml_location (config).
   --no-lands            Remove all land cards from the decks to produce
                         clusters of only nonland cards.
+  --label
 ```
+### Example usage
+`python3 main.py overlap`
+`python3 main.py analysis -r 0.9 --label --no-lands --graph`
 ## Issues and bug reports
 Issues and bug reports, as well as suggestions, can be filed at
 https://github.com/Jlobblet/decklist_analyser/issues

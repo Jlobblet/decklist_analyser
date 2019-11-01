@@ -27,23 +27,46 @@ decklist_line_2 = r"^\d+x?[^\S\n\r]+([\w '\-,/]*[^\s(\n])"
 
 
 class Logger(object):
+    """Object that writes to both sys.stdout and a file.
+    Parameters:
+    -----------
+    filepath: location of log file to write to.
+    """
+
     def __init__(self, filepath):
+        """Instantiate the class."""
         self.terminal = sys.stdout
         self.log = open(filepath, "a+")
 
     def __del__(self):
+        """Ensure the file is closed on deletion."""
         self.log.close()
 
     def write(self, message):
+        """Write a message to both the terminal and file."""
         self.terminal.write(message)
         self.log.write(message)
 
     def flush(self):
+        """Flush the terminal and file."""
         self.terminal.flush()
         self.log.flush()
 
 
 def get_terminal_size(fallback=(72, 24)):
+    """Attempt to determine the size of the terminal window.
+    Parameters:
+    -----------
+    fallback: tuple of two ints to return if the terminal size cannot be
+    determined.
+    Returns:
+    --------
+    columns: int number of columns in the terminal window, if detected,
+    else first fallback value.
+
+    rows: int number of row in the terminal window, if detected, else
+    second fallback value.
+    """
     for i in range(0, 3):
         try:
             columns, rows = os.get_terminal_size(i)
@@ -61,6 +84,8 @@ def create_set(text, no_lands=False):
     Parameters:
     -----------
     text: str - text to analyse to find card names in.
+
+    no_lands: bool whether to eliminate all lands (True) or not.
     Returns:
     --------
     names: set - unordered set of detected names.
@@ -90,6 +115,23 @@ def create_set_from_file(dir):
 
 
 def filter_sets(df, filter, field, whitelist=True):
+    """Take a dataframe and return it filtered based on whether a field
+    of sets contains values in filter if whitelist is True, or not in
+    filter if whitelist=False.
+    Parameters:
+    -----------
+    df: pandas DataFrame to filter.
+
+    filter: set containing values to filter on.
+
+    field: string name of field to filter.
+
+    whitelist: bool whether to exclude values not in filter (True) or
+    exclude values in filter (False).
+    Returns:
+    --------
+    df: pandas DataFrame with filter applied.
+    """
     if whitelist:
         mask = df[field].map(lambda x: x & filter != set())
     else:

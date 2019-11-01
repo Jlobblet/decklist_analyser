@@ -42,6 +42,8 @@ def read_raw_data(no_lands, data_loc=CONFIG["aggregate_data_loc"]):
     DataFrame of decklists.
     Parameters:
     -----------
+    no_lands: bool whether to exclude lands (True) or not (False).
+
     data_loc: string or filepath - location of the csv file to open.
     Returns:
     --------
@@ -339,6 +341,15 @@ def analysis(df, card_data_df, G, resolution_parameter, graph, label):
     the decks that each card belongs to as a set.
 
     G: igraph Graph representation of card_data_df.
+
+    resolution_parameter: float or None resolution_parameter to pass to
+    create_partition, defaulting to 1 if None is passed.
+
+    graph: bool whether to show the graph and create a graphml (True) or
+    not.
+
+    label: bool whether to query the user at each cluster for a friendly
+    name (True) or not.
     See also:
     ---------
     create_partition
