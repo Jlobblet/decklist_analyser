@@ -1,3 +1,17 @@
+#    decklist_analyser - Magic: the Gathering analsyis with graph theory.
+#    Copyright (C) 2019 John Blundell/Jlobblet
+#    Contact: 37539527+Jlobblet@users.noreply.github.com
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
 import argparse
 
 from modes import overlap, analysis
@@ -27,4 +41,11 @@ ARG_MAP = {
         args.no_lands,
     ),
 }
+print(
+    """
+    decklist_analyser  Copyright (C) 2019 John Blundell/Jlobblet
+    This program comes with ABSOLUTELY NO WARRANTY; license is included
+    as LICENSE.
+    """
+)
 FUNCTION_MAP[args.mode](*ARG_MAP[args.mode])
