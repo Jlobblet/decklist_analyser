@@ -1,6 +1,6 @@
 #    decklist_analyser - Magic: the Gathering analsyis with graph theory.
 #    Copyright (C) 2019 John Blundell/Jlobblet
-#    Contact: 37539527+Jlobblet@users.noreply.github.com
+#    Contact: jlobblet-github@gmx.co.uk
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
