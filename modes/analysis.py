@@ -23,7 +23,7 @@ sys.stdout = Logger(
 )
 
 
-def read_raw_data(data_loc=CONFIG["aggregate_data_loc"]):
+def read_raw_data(no_lands, data_loc=CONFIG["aggregate_data_loc"]):
     """Collect data from a csv file to locate decklists in and return
     DataFrame of decklists.
     Parameters:
@@ -44,9 +44,8 @@ def read_raw_data(data_loc=CONFIG["aggregate_data_loc"]):
         .reset_index()
         .loc[:, ["Deck 1 List", "Deck 2 List", "Deck 3 List"]]
     )
-    df = df.applymap(create_set)
+    df = df.applymap(lambda x: create_set(x, no_lands))
 
-    # print(df)
     return df
 
 
@@ -439,10 +438,10 @@ def meta_analysis(card_data_df, G, profile):
     plot_number_clusters(card_data_df, G, (profile[0], profile[1]))
 
 
-def main(profile, resolution_parameter, graph):
+def main(profile, resolution_parameter, graph, no_lands):
     """Run the functions provided in order to produce summary of data.
     """
-    df = read_raw_data()
+    df = read_raw_data(no_lands)
     all_cards = set()
     for index, row in df.iterrows():
         for deck in row:

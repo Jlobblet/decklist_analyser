@@ -5,6 +5,7 @@ from os.path import join
 import regex as re
 
 from config.CONFIG import CONFIG
+from config.lands import LANDS
 
 decklist_directory = CONFIG["decklist_directory"]
 decklist_line_1 = r"^([\w '\-,/]*[^\s(\n]) x\d+"
@@ -39,7 +40,7 @@ def get_terminal_size(fallback=(72, 24)):
     return columns, rows
 
 
-def create_set(text):
+def create_set(text, no_lands=False):
     """Take a multiline string and return a set of card names detected.
 
     Parameters:
@@ -54,6 +55,8 @@ def create_set(text):
         re.findall(decklist_line_1, text, flags=re.MULTILINE)
     ) | set(re.findall(decklist_line_2, text, flags=re.MULTILINE))
     names = {name.title() for name in names}
+    if no_lands:
+        names -= names & LANDS
     return names
 
 
