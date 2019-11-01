@@ -329,7 +329,7 @@ def classify_decklist(card_data_df, clusters, decklist):
     return decks
 
 
-def analysis(df, card_data_df, G, resolution_parameter, graph):
+def analysis(df, card_data_df, G, resolution_parameter, graph, label):
     """Create % breakdown of what decks are being played.
     Parameters:
     -----------
@@ -367,41 +367,6 @@ def analysis(df, card_data_df, G, resolution_parameter, graph):
     breakdown = [
         len([y for y in decks if x in y]) for x in range(clusters)
     ]
-    fig, ax = plt.subplots(
-        figsize=(6, 3), subplot_kw={"aspect": "equal"}
-    )
-    wedges, texts = plt.pie(
-        breakdown, counterclock=False, wedgeprops={"width": 0.5}
-    )
-    bbox_props = {
-        "boxstyle": "square,pad=0.3",
-        "fc": "w",
-        "ec": "k",
-        "lw": 0.72,
-    }
-    kw = {
-        "arrowprops": {"arrowstyle": "-"},
-        "bbox": bbox_props,
-        "zorder": 0,
-        "va": "center",
-    }
-
-    for i, p in enumerate(wedges):
-        ang = (p.theta2 - p.theta1) / 2.0 + p.theta1
-        y = np.sin(np.deg2rad(ang))
-        x = np.cos(np.deg2rad(ang))
-        # horizontalalignment = {-1: "right", 1: "left"}[int(np.sign(x))]
-        horizontalalignment = "center"
-        connectionstyle = "angle,angleA=0,angleB={}".format(ang)
-        kw["arrowprops"].update({"connectionstyle": connectionstyle})
-        ax.annotate(
-            f"{i}\n{round(100 * breakdown[i]/sum(breakdown), 1)}%",
-            xy=(x, y),
-            xytext=(1.35 * np.sign(x), 1.4 * y),
-            horizontalalignment=horizontalalignment,
-            **kw,
-        )
-
     with pd.option_context("display.max_rows", None):
         print({x: breakdown[x] for x in range(len(breakdown))})
         print("=" * columns)
@@ -440,6 +405,51 @@ def analysis(df, card_data_df, G, resolution_parameter, graph):
                 )
             )
             print("=" * columns)
+
+    if label:
+        names = []
+        for i in range(clusters):
+            print(f"Cluster {i} name: ", end="")
+            # names.append(input())
+            names = range(clusters)
+    else:
+        names = range(clusters)
+
+    fig, ax = plt.subplots(
+        figsize=(6, 3), subplot_kw={"aspect": "equal"}
+    )
+    wedges, texts = plt.pie(
+        breakdown, counterclock=False, wedgeprops={"width": 0.5}
+    )
+    bbox_props = {
+        "boxstyle": "square,pad=0.3",
+        "fc": "w",
+        "ec": "k",
+        "lw": 0.72,
+    }
+    kw = {
+        "arrowprops": {"arrowstyle": "-"},
+        "bbox": bbox_props,
+        "zorder": 0,
+        "va": "center",
+    }
+
+    for i, p in enumerate(wedges):
+        ang = (p.theta2 - p.theta1) / 2.0 + p.theta1
+        y = np.sin(np.deg2rad(ang))
+        x = np.cos(np.deg2rad(ang))
+        # horizontalalignment = {-1: "right", 1: "left"}[int(np.sign(x))]
+        horizontalalignment = "center"
+        connectionstyle = "angle,angleA=0,angleB={}".format(ang)
+        kw["arrowprops"].update({"connectionstyle": connectionstyle})
+        ax.annotate(
+            f"{names[i]}\n{round(100 * breakdown[i]/sum(breakdown), 1)}%",
+            xy=(x, y),
+            xytext=(1.35 * np.sign(x), 1.4 * y),
+            horizontalalignment=horizontalalignment,
+            **kw,
+        )
+
     plt.show()
 
 
@@ -452,7 +462,7 @@ def meta_analysis(card_data_df, G, profile):
     plot_number_clusters(card_data_df, G, (profile[0], profile[1]))
 
 
-def main(profile, resolution_parameter, graph, no_lands):
+def main(profile, resolution_parameter, graph, no_lands, label):
     """Run the functions provided in order to produce summary of data.
     """
     df = read_raw_data(no_lands)
@@ -468,4 +478,6 @@ def main(profile, resolution_parameter, graph, no_lands):
     else:
         if resolution_parameter is None:
             resolution_parameter = 1
-        analysis(df, card_data_df, G, resolution_parameter, graph)
+        analysis(
+            df, card_data_df, G, resolution_parameter, graph, label
+        )

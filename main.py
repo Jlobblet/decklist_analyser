@@ -44,6 +44,7 @@ parser.add_argument(
 parser.add_argument(
     "--no-lands", action="store_true", help=HELP["no-lands"]
 )
+parser.add_argument("--label", action="store_true")
 
 args = parser.parse_args()
 ARG_MAP = {
@@ -53,6 +54,7 @@ ARG_MAP = {
         args.resolution_parameter,
         args.graph,
         args.no_lands,
+        args.label,
     ),
 }
 print(
