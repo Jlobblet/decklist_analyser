@@ -367,6 +367,7 @@ def analysis(df, card_data_df, G, resolution_parameter, graph, label):
     breakdown = [
         len([y for y in decks if x in y]) for x in range(clusters)
     ]
+    names = []
     with pd.option_context("display.max_rows", None):
         print({x: breakdown[x] for x in range(len(breakdown))})
         print("=" * columns)
@@ -404,17 +405,11 @@ def analysis(df, card_data_df, G, resolution_parameter, graph, label):
                     }
                 )
             )
+            if label:
+                names.append(input("Name: "))
+            else:
+                names.append(cluster)
             print("=" * columns)
-
-    if label:
-        names = []
-        for i in range(clusters):
-            print(f"Cluster {i} name: ", end="")
-            # names.append(input())
-            names = range(clusters)
-    else:
-        names = range(clusters)
-
     fig, ax = plt.subplots(
         figsize=(6, 3), subplot_kw={"aspect": "equal"}
     )
