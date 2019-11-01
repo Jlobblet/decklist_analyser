@@ -23,28 +23,26 @@ FUNCTION_MAP = {
 }
 
 parser = argparse.ArgumentParser()
-parser.add_argument(
-    "--mode",
-    "-m",
-    type=str,
-    required=True,
-    choices=FUNCTION_MAP.keys(),
-    help=HELP["mode"],
+subparsers = parser.add_subparsers(
+    title="mode", help=HELP["mode"], required=True, dest="mode"
 )
-group = parser.add_mutually_exclusive_group()
+overlap_parser = subparsers.add_parser("overlap")
+# overlap_parser.add("overlap", action="store_true")
+analysis_parser = subparsers.add_parser("analysis")
+group = analysis_parser.add_mutually_exclusive_group()
 group.add_argument(
     "--profile", "-p", type=float, nargs=2, help=HELP["profile"]
 )
 group.add_argument(
     "--resolution_parameter", "-r", type=float, help=HELP["rp"]
 )
-parser.add_argument(
+analysis_parser.add_argument(
     "--graph", "-g", action="store_true", help=HELP["graph"]
 )
-parser.add_argument(
+analysis_parser.add_argument(
     "--no-lands", action="store_true", help=HELP["no-lands"]
 )
-parser.add_argument("--label", action="store_true")
+analysis_parser.add_argument("--label", action="store_true")
 
 args = parser.parse_args()
 ARG_MAP = {
