@@ -60,28 +60,23 @@ usage: main.py [-h] --mode {overlap,analysis}
 optional arguments:
   -h, --help            show this help message and exit
   --mode {overlap,analysis}, -m {overlap,analysis}
+                        Whether the program runs on overlap or analysis:
+                        overlap - Discover all files in the decklist_directory
+                        specified by CONFIG.py and return the cards that they
+                        share. analysis - Cluster decklists
   --profile PROFILE PROFILE, -p PROFILE PROFILE
+                        Run a profile and create a graph of number of clusters
+                        against resolution_parameter. The lower and upper
+                        bounds are specified after the parameter is passed.
+                        This disables the standard output.
   --resolution_parameter RESOLUTION_PARAMETER, -r RESOLUTION_PARAMETER
-  --graph, -g
-  --no-lands
+                        Set the resolution_parameter used in the program to
+                        the value passed.
+  --graph, -g           Produce a visual for the clusters and a .graphml file
+                        in graphml_location (config).
+  --no-lands            Remove all land cards from the decks to produce
+                        clusters of only nonland cards.
 ```
-### Explanation of parameters
-* `--mode` is reponsible for whether the program runs on `overlap` or
-`analysis`.
-  * `overlap` discovers all files in the `decklist_directory` specified
-  by `CONFIG.py` and returns the cards that they share.
-  * `analysis` is the bulk of the program, responsible for clustering
-  decklists. `analysis` has a series of subparameters.
-    * `--profile` runs a profile of number of clusters against
-    resolution_parameter. The lower and upper bounds are specified after
-    the parameter is passed. This disabled the standard output. It is
-    mutually exclusive with `--resolution_parameter`
-    * `--resolution_parameter` sets the resolution_parameter used in the
-    program to the value passed.
-    * `--graph` produces a visual for the clusters and a .graphml file
-    in `graphml_location` (config).
-    * `--no-lands` removes all land cards from the decks to produce
-    clusters of only nonland cards.
 ## Issues and bug reports
 Issues and bug reports, as well as suggestions, can be filed at
 https://github.com/Jlobblet/decklist_analyser/issues

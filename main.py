@@ -14,6 +14,7 @@
 
 import argparse
 
+from config.help import HELP
 from modes import overlap, analysis
 
 FUNCTION_MAP = {
@@ -23,13 +24,26 @@ FUNCTION_MAP = {
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    "--mode", "-m", type=str, required=True, choices=FUNCTION_MAP.keys()
+    "--mode",
+    "-m",
+    type=str,
+    required=True,
+    choices=FUNCTION_MAP.keys(),
+    help=HELP["mode"],
 )
 group = parser.add_mutually_exclusive_group()
-group.add_argument("--profile", "-p", type=float, nargs=2)
-group.add_argument("--resolution_parameter", "-r", type=float)
-parser.add_argument("--graph", "-g", action="store_true")
-parser.add_argument("--no-lands", action="store_true")
+group.add_argument(
+    "--profile", "-p", type=float, nargs=2, help=HELP["profile"]
+)
+group.add_argument(
+    "--resolution_parameter", "-r", type=float, help=HELP["rp"]
+)
+parser.add_argument(
+    "--graph", "-g", action="store_true", help=HELP["graph"]
+)
+parser.add_argument(
+    "--no-lands", action="store_true", help=HELP["no-lands"]
+)
 
 args = parser.parse_args()
 ARG_MAP = {
