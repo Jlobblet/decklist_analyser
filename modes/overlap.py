@@ -2,7 +2,7 @@ from os import listdir, getcwd
 from os.path import isfile, join
 
 from config.CONFIG import CONFIG
-from config.LANDS import BASICS
+from config.lands import BASICS
 from .functions import create_set_from_file
 
 decklist_directory = getcwd() + CONFIG["decklist_directory"]
