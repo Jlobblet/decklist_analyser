@@ -64,3 +64,4 @@ LANDS = {
     "Wind-Scarred Crag",
     "Witch's Cottage",
 }
+BASICS = {"Plains", "Island", "Swamp", "Mountain", "Forest"}

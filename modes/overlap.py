@@ -2,10 +2,10 @@ from os import listdir, getcwd
 from os.path import isfile, join
 
 from config.CONFIG import CONFIG
+from config.LANDS import BASICS
 from .functions import create_set_from_file
 
 decklist_directory = getcwd() + CONFIG["decklist_directory"]
-basics = CONFIG["basics"]
 
 
 def check_no_duplicates(*args):
@@ -26,11 +26,11 @@ def check_no_duplicates(*args):
     are omitted.
     """
     duplicates = {
-        f"{index1}, {index2}": (args[index1] - basics)
-        & (args[index2] - basics)
+        f"{index1}, {index2}": (args[index1] - BASICS)
+        & (args[index2] - BASICS)
         for index1 in range(len(args) - 1)
         for index2 in range(index1 + 1, len(args))
-        if (args[index1] - basics) & (args[index2] - basics)
+        if (args[index1] - BASICS) & (args[index2] - BASICS)
     }
     return duplicates
 
