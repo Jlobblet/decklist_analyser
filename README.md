@@ -17,10 +17,12 @@ Then, install `python-igraph`. It's important to do them this way
 around - `python-igraph` depends on `pycairo` and if you are manually
 downloading the wheels it won't use those, but rather download its own
 and fail. The above URL has wheels for `python-igraph`.
-Finally, install `louvain`. Again, the above URL has the wheels.
+Next, install `louvain`. Again, the above URL has the wheels.
+`matplotlib` can also be found above.
 ### Involved method (Unix)
 Start by installing `numpy`, `pandas` and `regex` with whatever package
 manager you prefer.
+Since Unix systems vary wildly, I only detail the broad strokes below.
 Next, attempt to install `pycairo`. If this fails, you're probably
 missing dependencies required. See
 https://pycairo.readthedocs.io/en/latest/getting_started.html for
@@ -29,6 +31,7 @@ Then, install `python-igraph`. Again, missing dependencies are likely -
 check https://igraph.org/python/.
 Similarly, for `louvain`, detailed installation instructions can be
 found from https://louvain-igraph.readthedocs.io/en/latest/install.html.
+`matplotlib` installation instructions are at https://matplotlib.org/3.1.1/users/installing.html.
 ## Configuration
 In the directory, create the folders `logs/` and `output/`.
 This prevents the program throwing errors because it doesn't currently
