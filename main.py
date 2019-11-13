@@ -48,11 +48,11 @@ args = parser.parse_args()
 ARG_MAP = {
     "overlap": tuple(),
     "analysis": (
-        args.profile,
-        args.resolution_parameter,
-        args.graph,
-        args.no_lands,
-        args.label,
+        getattr(args, "profile", None),
+        getattr(args, "resolution_parameter", None),
+        getattr(args, "graph", None),
+        getattr(args, "no_lands", None),
+        getattr(args, "label", None),
     ),
 }
 print(
