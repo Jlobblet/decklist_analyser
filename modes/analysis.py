@@ -88,8 +88,8 @@ def create_card_df(all_cards, df):
 
     decks = df.values.flatten().tolist()
 
-    for i in range(len(decks)):
-        for card in decks[i]:
+    for i, deck in enumerate(decks):
+        for card in deck:
             card_data_df.at[card, "Decks"].add(i)
 
     card_data_df["Count"] = card_data_df["Decks"].apply(len)
