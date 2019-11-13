@@ -70,4 +70,5 @@ def calculate_overlap():
     set_decklists = [
         create_set_from_file(decklist) for decklist in decklists
     ]
+    print("\n".join([y for x in set_decklists for y in x]))
     print(check_no_duplicates(*set_decklists))

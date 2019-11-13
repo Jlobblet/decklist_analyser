@@ -94,7 +94,7 @@ def create_set(text, no_lands=False):
     names = set(
         re.findall(decklist_line_1, text, flags=re.MULTILINE)
     ) | set(re.findall(decklist_line_2, text, flags=re.MULTILINE))
-    names = {name.title() for name in names}
+    names = {name.title().replace("'S", "'s") for name in names}
     if no_lands:
         names -= names & LANDS
     return names

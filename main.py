@@ -43,17 +43,21 @@ analysis_parser.add_argument(
     "--no-lands", action="store_true", help=HELP["no-lands"]
 )
 analysis_parser.add_argument("--label", action="store_true")
+analysis_parser.add_argument("--start", "-s", type=str)
 
 args = parser.parse_args()
 ARG_MAP = {
-    "overlap": tuple(),
-    "analysis": (
-        getattr(args, "profile", None),
-        getattr(args, "resolution_parameter", None),
-        getattr(args, "graph", None),
-        getattr(args, "no_lands", None),
-        getattr(args, "label", None),
-    ),
+    "overlap": dict(),
+    "analysis": {
+        "profile": getattr(args, "profile", None),
+        "resolution_parameter": getattr(
+            args, "resolution_parameter", None
+        ),
+        "graph": getattr(args, "graph", None),
+        "no_lands": getattr(args, "no_lands", None),
+        "label": getattr(args, "label", None),
+        "init": getattr(args, "start", None),
+    },
 }
 print(
     """
@@ -62,4 +66,4 @@ print(
     as LICENSE.
     """
 )
-FUNCTION_MAP[args.mode](*ARG_MAP[args.mode])
+FUNCTION_MAP[args.mode](**ARG_MAP[args.mode])

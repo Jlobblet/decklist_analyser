@@ -65,7 +65,7 @@ def read_raw_data(no_lands, data_loc=CONFIG["aggregate_data_loc"]):
     return df
 
 
-def create_card_df(all_cards, df):
+def create_card_df(all_cards, df, init=None):
     """Take the set of all cards and all decklists and create a
     DataFrame containing as columns Card, Number of Decks in and which
     decks those are.
@@ -75,6 +75,9 @@ def create_card_df(all_cards, df):
     give data set.
 
     df: pandas DataFrame containing all decklists.
+
+    init: None or string or  whether to specify an initial cluster
+    membership for each card - if string, path
     Returns:
     --------
     card_data_df: pandas DataFrame as described above.
@@ -93,6 +96,16 @@ def create_card_df(all_cards, df):
             card_data_df.at[card, "Decks"].add(i)
 
     card_data_df["Count"] = card_data_df["Decks"].apply(len)
+
+    if init:
+        card_data_df = card_data_df.merge(
+            right=pd.read_csv(init), how="left", on="Card"
+        )
+        card_data_df.fillna(
+            card_data_df["init"].max() + 1, inplace=True
+        )
+        card_data_df["init"] = card_data_df["init"].astype(int)
+
     card_data_df.sort_values(
         by=["Count", "Card"], inplace=True, ascending=[False, True]
     )
@@ -167,7 +180,9 @@ def plot_number_clusters(card_data_df, G, resolution_range):
     plt.show()
 
 
-def create_partition(card_data_df, G, resolution_parameter=1):
+def create_partition(
+    card_data_df, G, resolution_parameter=1, init=None
+):
     """Take a card_data_df and the graph that represents it and create
     clusters based on lv.RBERVertexPartition.
     Parameters:
@@ -194,12 +209,18 @@ def create_partition(card_data_df, G, resolution_parameter=1):
     https://louvain-igraph.readthedocs.io/en/latest/reference.html#rbervertexpartition:
     information on the algorithm used.
     """
+    if init:
+        initial_membership = card_data_df["init"].tolist()
+    else:
+        initial_membership = None
+
     partition = lv.find_partition(
         G,
         lv.RBERVertexPartition,
         weights="weight",
         resolution_parameter=resolution_parameter,
         node_sizes=card_data_df["Count"].tolist(),
+        initial_membership=initial_membership,
     )
 
     clusters = 0
@@ -331,7 +352,7 @@ def classify_decklist(card_data_df, clusters, decklist):
     return decks
 
 
-def analysis(df, card_data_df, G, resolution_parameter, graph, label):
+def analysis(df, card_data_df, G, **kwargs):
     """Create % breakdown of what decks are being played.
     Parameters:
     -----------
@@ -359,9 +380,9 @@ def analysis(df, card_data_df, G, resolution_parameter, graph, label):
     classify_decklist
     """
     partition, clusters = create_partition(
-        card_data_df, G, resolution_parameter
+        card_data_df, G, kwargs["resolution_parameter"], kwargs["init"]
     )
-    if graph:
+    if kwargs["graph"]:
         ig.plot(partition, bbox=(4000, 2000))
         G.vs["cluster"] = [
             item
@@ -416,7 +437,7 @@ def analysis(df, card_data_df, G, resolution_parameter, graph, label):
                     }
                 )
             )
-            if label:
+            if kwargs["label"]:
                 names.append(input("Name: "))
             else:
                 names.append(cluster)
@@ -424,7 +445,7 @@ def analysis(df, card_data_df, G, resolution_parameter, graph, label):
     fig, ax = plt.subplots(
         figsize=(6, 3), subplot_kw={"aspect": "equal"}
     )
-    wedges, texts = plt.pie(
+    wedges, texts = ax.pie(
         breakdown, counterclock=False, wedgeprops={"width": 0.5}
     )
     bbox_props = {
@@ -468,22 +489,20 @@ def meta_analysis(card_data_df, G, profile):
     plot_number_clusters(card_data_df, G, (profile[0], profile[1]))
 
 
-def main(profile, resolution_parameter, graph, no_lands, label):
+def main(**kwargs):
     """Run the functions provided in order to produce summary of data.
     """
-    df = read_raw_data(no_lands)
+    df = read_raw_data(kwargs["no_lands"])
     all_cards = set()
     for index, row in df.iterrows():
         for deck in row:
             all_cards = all_cards | deck
 
-    card_data_df = create_card_df(all_cards, df)
+    card_data_df = create_card_df(all_cards, df, kwargs["init"])
     G = create_graph(card_data_df)
-    if profile:
-        meta_analysis(card_data_df, G, profile)
+    if kwargs["profile"]:
+        meta_analysis(card_data_df, G, kwargs["profile"])
     else:
-        if resolution_parameter is None:
-            resolution_parameter = 1
-        analysis(
-            df, card_data_df, G, resolution_parameter, graph, label
-        )
+        if kwargs["resolution_parameter"] is None:
+            kwargs["resolution_parameter"] = 1
+        analysis(df, card_data_df, G, **kwargs)
