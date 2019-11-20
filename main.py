@@ -18,7 +18,7 @@ from config.help import HELP
 from modes import overlap, analysis
 
 FUNCTION_MAP = {
-    "overlap": overlap.calculate_overlap,
+    "overlap": overlap.main,
     "analysis": analysis.main,
 }
 
@@ -26,8 +26,12 @@ parser = argparse.ArgumentParser()
 subparsers = parser.add_subparsers(
     title="mode", help=HELP["mode"], required=True, dest="mode"
 )
+
 overlap_parser = subparsers.add_parser("overlap")
-# overlap_parser.add("overlap", action="store_true")
+overlap_parser.add_argument(
+    "--all", "-a", action="store_true", help=HELP["all"]
+)
+
 analysis_parser = subparsers.add_parser("analysis")
 group = analysis_parser.add_mutually_exclusive_group()
 group.add_argument(
@@ -42,12 +46,19 @@ analysis_parser.add_argument(
 analysis_parser.add_argument(
     "--no-lands", action="store_true", help=HELP["no-lands"]
 )
-analysis_parser.add_argument("--label", action="store_true")
-analysis_parser.add_argument("--start", "-s", type=str)
+analysis_parser.add_argument(
+    "--label", action="store_true", help=HELP["label"]
+)
+analysis_parser.add_argument(
+    "--colour", action="store_true", help=HELP["colour"]
+)
+analysis_parser.add_argument(
+    "--start", "-s", type=str, help=HELP["init"]
+)
 
 args = parser.parse_args()
 ARG_MAP = {
-    "overlap": dict(),
+    "overlap": {"all": getattr(args, "all", None),},
     "analysis": {
         "profile": getattr(args, "profile", None),
         "resolution_parameter": getattr(
@@ -56,6 +67,7 @@ ARG_MAP = {
         "graph": getattr(args, "graph", None),
         "no_lands": getattr(args, "no_lands", None),
         "label": getattr(args, "label", None),
+        "colour": getattr(args, "colour", None),
         "init": getattr(args, "start", None),
     },
 }

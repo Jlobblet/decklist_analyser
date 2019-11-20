@@ -17,7 +17,7 @@ from os.path import isfile, join
 
 from config.CONFIG import CONFIG
 from config.lands import BASICS
-from .functions import create_set_from_file
+from .functions import create_set_from_file, read_raw_data
 
 decklist_directory = getcwd() + CONFIG["decklist_directory"]
 
@@ -49,16 +49,16 @@ def check_no_duplicates(*args):
     return duplicates
 
 
-def calculate_overlap():
+def calculate_file_overlaps():
     """Open all the files in a given directory and then check all of
     them for duplicate cards with each other.
     Returns:
-    ------
+    --------
     duplicates: dict - keys are string of the form f"{index1}, {index2}"
     and values are the union of those sets, if nonempty. Empty unions
     are omitted.
     See also:
-    ------
+    ---------
     check_no_duplicates
     """
     decklists = [
@@ -70,5 +70,40 @@ def calculate_overlap():
     set_decklists = [
         create_set_from_file(decklist) for decklist in decklists
     ]
-    print("\n".join([y for x in set_decklists for y in x]))
     print(check_no_duplicates(*set_decklists))
+
+
+def calculate_all_overlaps(df):
+    """Determine which teams have overlap.
+
+    Given a dataframe containg all decklists and team names,
+    determine which teams have overlap in their decklists.
+    Parameters:
+    -----------
+    df: pandas DataFrame containing the columns "Team Name",
+    "Deck 1 List", "Deck 2 List", "Deck 3 List" where Team Name contains
+    the name of the team and Deck [123] List contains sets with the
+    decklists.
+    See also:
+    ---------
+    read_raw_data
+
+    check_no_duplicates
+    """
+    for row in df.iterrows():
+        pass
+        decks = row[1][
+            ["Deck 1 List", "Deck 2 List", "Deck 3 List"]
+        ].tolist()
+        overlap = check_no_duplicates(*decks)
+        if overlap:
+            print("{} - {}".format(row[1]["Team Name"], overlap))
+
+
+def main(**kwargs):
+    """Run the functions provided in order to determine overlaps.
+    """
+    if kwargs["all"]:
+        calculate_all_overlaps(read_raw_data(no_lands=False))
+    else:
+        calculate_file_overlaps()

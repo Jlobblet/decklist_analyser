@@ -62,38 +62,35 @@ optional arguments:
   -h, --help          show this help message and exit
 
 mode:
-  {overlap,analysis}  Whether the program runs on overlap or analysis: overlap
-                      - Discover all files in the decklist_directory specified
-                      by CONFIG.py and return the cards that they share.
-                      analysis - Cluster decklists
+  {overlap,analysis}  Whether the program runs on overlap or analysis: overlap - Discover all files in the decklist_directory specified by CONFIG.py and
+                      return the cards that they share. analysis - Cluster decklists
 ```
 `python3 main.py overlap -h` has no additional arguments:
 ```
-usage: main.py overlap [-h]
+usage: main.py overlap [-h] [--all]
 
 optional arguments:
   -h, --help  show this help message and exit
+  --all, -a   Check for overlap in all decks of specifed aggregate location.
 ```
 `python3 main.py analysis -h` produces:
-```usage: main.py analysis [-h]
-                        [--profile PROFILE PROFILE | --resolution_parameter RESOLUTION_PARAMETER]
-                        [--graph] [--no-lands] [--label]
+```
+usage: main.py analysis [-h] [--profile PROFILE PROFILE | --resolution_parameter RESOLUTION_PARAMETER] [--graph] [--no-lands] [--label] [--colour]
+                        [--start START]
 
 optional arguments:
   -h, --help            show this help message and exit
   --profile PROFILE PROFILE, -p PROFILE PROFILE
-                        Run a profile and create a graph of number of clusters
-                        against resolution_parameter. The lower and upper
-                        bounds are specified after the parameter is passed.
-                        This disables the standard output.
+                        Run a profile and create a graph of number of clusters against resolution_parameter. The lower and upper bounds are specified after
+                        the parameter is passed. This disables the standard output.
   --resolution_parameter RESOLUTION_PARAMETER, -r RESOLUTION_PARAMETER
-                        Set the resolution_parameter used in the program to
-                        the value passed.
-  --graph, -g           Produce a visual for the clusters and a .graphml file
-                        in graphml_location (config).
-  --no-lands            Remove all land cards from the decks to produce
-                        clusters of only nonland cards.
-  --label
+                        Set the resolution_parameter used in the program to the value passed.
+  --graph, -g           Produce a visual for the clusters and a .graphml file in graphml_location (config).
+  --no-lands            Remove all land cards from the decks to produce clusters of only nonland cards.
+  --label               Ask the user for names for each cluster detected
+  --colour              Ask the user for colours to plot each cluster's wedge in.
+  --start START, -s START
+                        Where initial card cluster membership is stored.
 ```
 ### Example usage
 `python3 main.py overlap`

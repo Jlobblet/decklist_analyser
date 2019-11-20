@@ -24,9 +24,9 @@ import matplotlib.pyplot as plt
 from config.CONFIG import CONFIG
 from .functions import (
     Logger,
-    create_set,
     filter_sets,
     get_terminal_size,
+    read_raw_data,
 )
 
 columns, rows = get_terminal_size()
@@ -35,34 +35,6 @@ sys.stdout = Logger(
         datetime.date.today().strftime("%b-%d-%Y")
     )
 )
-
-
-def read_raw_data(no_lands, data_loc=CONFIG["aggregate_data_loc"]):
-    """Collect data from a csv file to locate decklists in and return
-    DataFrame of decklists.
-    Parameters:
-    -----------
-    no_lands: bool whether to exclude lands (True) or not (False).
-
-    data_loc: string or filepath - location of the csv file to open.
-    Returns:
-    --------
-    pandas DataFrame containing three columns ["Deck 1 List",
-    "Deck 2 List", "Deck 3 List"], each of which contains a set
-    detailing each card in that decklist as detected by create_set.
-    See also:
-    ---------
-    create_set
-    """
-    df = pd.read_csv(data_loc)
-    df = (
-        df.dropna()
-        .reset_index()
-        .loc[:, ["Deck 1 List", "Deck 2 List", "Deck 3 List"]]
-    )
-    df = df.applymap(lambda x: create_set(x, no_lands))
-
-    return df
 
 
 def create_card_df(all_cards, df, init=None):
@@ -76,7 +48,7 @@ def create_card_df(all_cards, df, init=None):
 
     df: pandas DataFrame containing all decklists.
 
-    init: None or string or  whether to specify an initial cluster
+    init: None or string or whether to specify an initial cluster
     membership for each card - if string, path
     Returns:
     --------
@@ -195,6 +167,9 @@ def create_partition(
     resolution_parameter: float to pass to the RBERVertexPartition as
     represented by γ in the quality function
       Q=∑(ij) (A_ij−γp)δ(σi,σj).
+
+    init: None or string or  whether to specify an initial cluster
+    membership for each card - if string, path
     Returns:
     --------
     partition: the partition created by lv.find_partition.
@@ -315,7 +290,7 @@ def create_graphml(card_data_df, G, filepath):
 
 
 def classify_decklist(card_data_df, clusters, decklist):
-    """
+    """Group each deck into a dominant cluster.
     Parameters:
     -----------
     card_data_df: pandas DataFrame containing as colu.mns card name and
@@ -369,11 +344,22 @@ def analysis(df, card_data_df, G, **kwargs):
     graph: bool whether to show the graph and create a graphml (True) or
     not.
 
+    no_lands: bool whether to exclude all lands (as provided by
+    config.lands.LANDS) from the decklists.
+
     label: bool whether to query the user at each cluster for a friendly
     name (True) or not.
+
+    init: string (or filepath) to location of initial cluster membership
+    csv file.
+
+    colour: bool whether to ask user to manually assign each cluster
+    a colour to be plotted with.
     See also:
     ---------
     create_partition
+
+    create_graphml
 
     multi_cluster
 
@@ -400,6 +386,7 @@ def analysis(df, card_data_df, G, **kwargs):
         len([y for y in decks if x in y]) for x in range(clusters)
     ]
     names = []
+    colours = []
     with pd.option_context("display.max_rows", None):
         print({x: breakdown[x] for x in range(len(breakdown))})
         print("=" * columns)
@@ -441,6 +428,8 @@ def analysis(df, card_data_df, G, **kwargs):
                 names.append(input("Name: "))
             else:
                 names.append(cluster)
+            if kwargs["colour"]:
+                colours.append("xkcd:{}".format(input("XKCD Colour: ")))
             print("=" * columns)
     fig, ax = plt.subplots(
         figsize=(6, 3), subplot_kw={"aspect": "equal"}
@@ -476,12 +465,32 @@ def analysis(df, card_data_df, G, **kwargs):
             horizontalalignment=horizontalalignment,
             **kw,
         )
+        if colours:
+            p.set_color(colours[i])
 
     plt.show()
 
 
 def meta_analysis(card_data_df, G, profile):
-    """Wrapper for plot_number_clusters."""
+    """Wrapper for plot_number_clusters.
+    Parameters:
+    -----------
+    card_data_df: pandas DataFrame containing as colu.mns card name and
+    the decks that each card belongs to as a set.
+
+    G: igraph Graph representation of card_data_df.
+
+    profile: tuple of floats containing lower and upper bounds
+    respectively to run the optimisation profiler over, to determine
+    number of clusters against resolution_parameter.
+    Raises:
+    -------
+    ValueError - if the first profile value is greater or equal to the
+    second.
+    See also:
+    ---------
+    plot_number_clusters
+    """
     if profile[0] >= profile[1]:
         raise ValueError(
             f"The first profile value must be smaller than the second.\nPassed values: {profile[0]}, {profile[1]}"
@@ -491,6 +500,17 @@ def meta_analysis(card_data_df, G, profile):
 
 def main(**kwargs):
     """Run the functions provided in order to produce summary of data.
+    See also:
+    ---------
+    read_raw_data
+
+    create_card_df
+
+    create_graph
+
+    meta_analysis
+
+    analysis
     """
     df = read_raw_data(kwargs["no_lands"])
     all_cards = set()

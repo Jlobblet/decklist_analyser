@@ -17,6 +17,7 @@ import os
 from os.path import join
 
 import regex as re
+import pandas as pd
 
 from config.CONFIG import CONFIG
 from config.lands import LANDS
@@ -137,3 +138,42 @@ def filter_sets(df, filter, field, whitelist=True):
     else:
         mask = df[field].map(lambda x: x & filter == set())
     return df[mask]
+
+
+def read_raw_data(
+    no_lands, names=False, data_loc=CONFIG["aggregate_data_loc"]
+):
+    """Collect data from a csv file to locate decklists in and return
+    DataFrame of decklists.
+    Parameters:
+    -----------
+    no_lands: bool whether to exclude lands (True) or not (False).
+
+    data_loc: string or filepath - location of the csv file to open.
+    Returns:
+    --------
+    pandas DataFrame containing three columns ["Deck 1 List",
+    "Deck 2 List", "Deck 3 List"], each of which contains a set
+    detailing each card in that decklist as detected by create_set.
+    See also:
+    ---------
+    create_set
+    """
+    if names:
+        cols = [
+            "Team Name",
+            "Deck 1 List",
+            "Deck 2 List",
+            "Deck 3 List",
+        ]
+    else:
+        cols = ["Deck 1 List", "Deck 2 List", "Deck 3 List"]
+    df = pd.read_csv(data_loc)
+    df = (
+        df.dropna().reset_index().loc[:, cols,]
+    )
+    df[["Deck 1 List", "Deck 2 List", "Deck 3 List"]] = df[
+        ["Deck 1 List", "Deck 2 List", "Deck 3 List"]
+    ].applymap(lambda x: create_set(x, no_lands))
+
+    return df
