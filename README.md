@@ -65,7 +65,7 @@ mode:
   {overlap,analysis}  Whether the program runs on overlap or analysis: overlap - Discover all files in the decklist_directory specified by CONFIG.py and
                       return the cards that they share. analysis - Cluster decklists
 ```
-`python3 main.py overlap -h` has no additional arguments:
+`python3 main.py overlap -h` has the following output:
 ```
 usage: main.py overlap [-h] [--all]
 
