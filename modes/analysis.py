@@ -20,6 +20,7 @@ import pandas as pd
 import igraph as ig
 import louvain as lv
 import matplotlib.pyplot as plt
+import matplotlib._color_data as mcd
 
 from config.CONFIG import CONFIG
 from .functions import (
@@ -429,7 +430,14 @@ def analysis(df, card_data_df, G, **kwargs):
             else:
                 names.append(cluster)
             if kwargs["colour"]:
-                colours.append("xkcd:{}".format(input("XKCD Colour: ")))
+                valid = False
+                while not valid:
+                    colour = "xkcd:{}".format(input("XKCD Colour: ").lower())
+                    if colour in mcd.XKCD_COLORS:
+                        valid = True
+                    else:
+                        print(f"Colour {colour} not found.")
+                colours.append(colour)
             print("=" * columns)
     fig, ax = plt.subplots(
         figsize=(6, 3), subplot_kw={"aspect": "equal"}
