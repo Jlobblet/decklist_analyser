@@ -466,7 +466,10 @@ def analysis(df, card_data_df, G, **kwargs):
             **kw,
         )
         if colours:
-            p.set_color(colours[i])
+            try:
+                p.set_color(colours[i])
+            except ValueError:
+                print(f"Colour {colours[i]} not found, using {p.get_ec()}")
 
     plt.show()
 
