@@ -169,9 +169,7 @@ def read_raw_data(
     else:
         cols = ["Deck 1 List", "Deck 2 List", "Deck 3 List"]
     df = pd.read_csv(data_loc)
-    df = (
-        df.dropna().reset_index().loc[:, cols,]
-    )
+    df = df.dropna().reset_index().loc[:, cols]
     df[["Deck 1 List", "Deck 2 List", "Deck 3 List"]] = df[
         ["Deck 1 List", "Deck 2 List", "Deck 3 List"]
     ].applymap(lambda x: create_set(x, no_lands))

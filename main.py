@@ -17,10 +17,7 @@ import argparse
 from config.help import HELP
 from modes import overlap, analysis
 
-FUNCTION_MAP = {
-    "overlap": overlap.main,
-    "analysis": analysis.main,
-}
+FUNCTION_MAP = {"overlap": overlap.main, "analysis": analysis.main}
 
 parser = argparse.ArgumentParser()
 subparsers = parser.add_subparsers(
@@ -58,7 +55,7 @@ analysis_parser.add_argument(
 
 args = parser.parse_args()
 ARG_MAP = {
-    "overlap": {"all": getattr(args, "all", None),},
+    "overlap": {"all": getattr(args, "all", None)},
     "analysis": {
         "profile": getattr(args, "profile", None),
         "resolution_parameter": getattr(
