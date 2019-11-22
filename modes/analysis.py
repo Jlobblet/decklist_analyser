@@ -475,6 +475,7 @@ def analysis(df, card_data_df, G, **kwargs):
             horizontalalignment=horizontalalignment,
             **kw,
         )
+        p.set_label(f"{names[i]}: {breakdown[i]} decks")
         if colours:
             try:
                 p.set_color(colours[i])
@@ -483,6 +484,7 @@ def analysis(df, card_data_df, G, **kwargs):
                     f"Colour {colours[i]} not found, using {p.get_ec()}"
                 )
 
+    fig.legend()
     plt.show()
 
 
