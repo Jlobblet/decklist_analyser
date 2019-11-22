@@ -391,7 +391,7 @@ def analysis(df, card_data_df, G, **kwargs):
     with pd.option_context("display.max_rows", None):
         print({x: breakdown[x] for x in range(len(breakdown))})
         print("=" * columns)
-        print(f"Full df: {card_data_df}")
+        print(f"Full df:\n{card_data_df}")
         print("=" * columns)
         print("Cluster overview:")
         for cluster in range(clusters):
@@ -432,7 +432,9 @@ def analysis(df, card_data_df, G, **kwargs):
             if kwargs["colour"]:
                 valid = False
                 while not valid:
-                    colour = "xkcd:{}".format(input("XKCD Colour: ").lower())
+                    colour = "xkcd:{}".format(
+                        input("XKCD Colour: ").lower()
+                    )
                     if colour in mcd.XKCD_COLORS:
                         valid = True
                     else:
@@ -477,7 +479,9 @@ def analysis(df, card_data_df, G, **kwargs):
             try:
                 p.set_color(colours[i])
             except ValueError:
-                print(f"Colour {colours[i]} not found, using {p.get_ec()}")
+                print(
+                    f"Colour {colours[i]} not found, using {p.get_ec()}"
+                )
 
     plt.show()
 
