@@ -104,6 +104,8 @@ def main(**kwargs):
     """Run the functions provided in order to determine overlaps.
     """
     if kwargs["all"]:
-        calculate_all_overlaps(read_raw_data(no_lands=False))
+        calculate_all_overlaps(
+            read_raw_data(no_lands=False, names=True)
+        )
     else:
         calculate_file_overlaps()
