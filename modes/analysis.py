@@ -444,7 +444,7 @@ def analysis(df, card_data_df, G, **kwargs):
     fig, ax = plt.subplots(
         figsize=(6, 3), subplot_kw={"aspect": "equal"}
     )
-    wedges, texts = ax.pie(
+    wedges, _ = ax.pie(
         breakdown, counterclock=False, wedgeprops={"width": 0.5}
     )
     bbox_props = {
@@ -531,7 +531,7 @@ def main(**kwargs):
     """
     df = read_raw_data(kwargs["no_lands"])
     all_cards = set()
-    for index, row in df.iterrows():
+    for _, row in df.iterrows():
         for deck in row:
             all_cards = all_cards | deck
 
