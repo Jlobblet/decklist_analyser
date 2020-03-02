@@ -155,6 +155,10 @@ def read_raw_data(
     pandas DataFrame containing three columns ["Deck 1 List",
     "Deck 2 List", "Deck 3 List"], each of which contains a set
     detailing each card in that decklist as detected by create_set.
+    Raises:
+    -------
+    ValueError: one of the column names could not be found in the
+    DataFrame
     See also:
     ---------
     create_set
@@ -169,6 +173,9 @@ def read_raw_data(
     else:
         cols = ["Deck 1 List", "Deck 2 List", "Deck 3 List"]
     df = pd.read_csv(data_loc)
+    for col_name in cols:
+        if col_name not in df.columns:
+            raise ValueError(f"Column {col_name} could not be found in csv - check headers are named appropriately.")
     df = df.dropna().reset_index().loc[:, cols]
     df[["Deck 1 List", "Deck 2 List", "Deck 3 List"]] = df[
         ["Deck 1 List", "Deck 2 List", "Deck 3 List"]
