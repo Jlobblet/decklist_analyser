@@ -1,4 +1,4 @@
-Timestamp,Team Name (Must be the same as the NUEL website),Deck 1 Pilot IGN,Deck 1 List,Deck 2 Pilot IGN,Deck 2 List,Deck 3 Pilot IGN,Deck 3 List
+Timestamp,Team Name,Deck 1 Pilot IGN,Deck 1 List,Deck 2 Pilot IGN,Deck 2 List,Deck 3 Pilot IGN,Deck 3 List
 2/29/2020 17:14:43,test,test,test,test,test,test,test
 2/29/2020 20:56:28,SecondPickBear,Ninassin#49901,"Deck
 2 Tymaret, Chosen from Death (THB) 119
@@ -143,7 +143,7 @@ Sideboard
 Sideboard
 3 Take Vengeance (M19) 40
 1 Pacifism (M20) 32"
-3/1/2020 15:08:12,FieldsBadMan,Cardinal#52203,"4 Anax, Hardened in the Forge (THB) 125
+03/01/2020 15:08,FieldsBadMan,Cardinal#52203,"4 Anax, Hardened in the Forge (THB) 125
 4 Bonecrusher Giant (ELD) 115
 4 Castle Embereth (ELD) 239
 3 Embercleave (ELD) 120
@@ -219,7 +219,7 @@ Sideboard
 2 Glass Casket (ELD) 15
 1 Heliod's Intervention (THB) 19
 "
-3/1/2020 16:23:53,Geists of St Andrews,MessedThoughts#85415,"Deck
+03/01/2020 16:23,Geists of St Andrews,MessedThoughts#85415,"Deck
 4 Teferi, Time Raveler (WAR) 221
 8 Island (THB) 251
 4 Elspeth Conquers Death (THB) 13
@@ -303,7 +303,7 @@ Sideboard
 4 Lava Coil (GRN) 108
 3 Redcap Melee (ELD) 135
 2 Chandra, Acolyte of Flame (M20) 126"
-3/1/2020 16:24:30,Jundee,Dryden#89114 ,"Deck
+03/01/2020 16:24,Jundee,Dryden#89114 ,"Deck
 4 Teferi, Time Raveler (WAR) 221
 5 Plains (ELD) 250
 2 Mystical Dispute (ELD) 58
@@ -391,7 +391,7 @@ Sideboard
 3 Return to Nature (WAR) 175
 1 Sorcerous Spyglass (XLN) 248
 3 Voracious Hydra (M20) 200"
-3/1/2020 16:32:33,Teesside's Finest,ApexSayers#33464,"Deck
+03/01/2020 16:32,Teesside's Finest,ApexSayers#33464,"Deck
 4 Teferi, Time Raveler (WAR) 221
 4 Plains (THB) 250
 2 Mystical Dispute (ELD) 58
@@ -474,7 +474,7 @@ Sideboard
 2 Noxious Grasp (M20) 110
 2 Ritual of Soot (GRN) 84
 4 Unmoored Ego (GRN) 212"
-3/1/2020 16:37:15,Leicester Golden-Tails,fish.#23042 ,"Deck
+03/01/2020 16:37,Leicester Golden-Tails,fish.#23042 ,"Deck
 2 Dream Trawler (THB) 214
 2 Narset, Parter of Veils (WAR) 61
 4 Teferi, Time Raveler (WAR) 221
@@ -553,7 +553,7 @@ Sideboard
 2 Prison Realm (WAR) 26
 3 Hushbringer (ELD) 18
 2 Pacifism (M20) 32"
-3/1/2020 16:52:59,UEA Wizards,jess_camp#25100,"Deck
+03/01/2020 16:52,UEA Wizards,jess_camp#25100,"Deck
 3 Dream Trawler (THB) 214
 4 Absorb (RNA) 151
 2 Castle Ardenvale (ELD) 238
@@ -634,7 +634,7 @@ Sideboard
 4 Unchained Berserker (M20) 164
 3 Redcap Melee (ELD) 135
 1 Tibalt, Rakish Instigator (WAR) 146"
-3/1/2020 17:26:31,Baleful SusStrix,jev#47458,"Deck
+03/01/2020 17:26,Baleful SusStrix,jev#47458,"Deck
 4 Arboreal Grazer (WAR) 149
 4 Breeding Pool (RNA) 246
 2 Casualties of War (WAR) 187
@@ -712,7 +712,7 @@ Sideboard
 1 Narset, Parter of Veils (WAR) 61
 2 Commence the Endgame (WAR) 45
 2 Cerulean Drake (M20) 53"
-3/1/2020 17:29:11,Bath to Exile,JoshE#18663,"Deck
+03/01/2020 17:29,Bath to Exile,JoshE#18663,"Deck
 4 Cauldron Familiar (ELD) 81
 4 Gilded Goose (ELD) 160
 1 God-Eternal Bontu (WAR) 92
@@ -794,7 +794,7 @@ Sideboard
 1 Dream Trawler (THB) 214
 3 Devout Decree (M20) 13
 3 Shifting Ceratops (M20) 194"
-3/1/2020 17:36:37,Chi Gatewatch,JackelBat#93394 ,"Deck
+03/01/2020 17:36,Chi Gatewatch,JackelBat#93394 ,"Deck
 4 Bonecrusher Giant (ELD) 115
 3 Domri's Ambush (WAR) 192
 3 Embercleave (ELD) 120
@@ -882,7 +882,7 @@ Sideboard
 1 Liliana, Dreadhorde General (WAR) 97
 1 The Elderspell (WAR) 89
 1 Enter the God-Eternals (WAR) 196"
-3/1/2020 17:50:08,#KillDaxos,Daedalus#59035,"Deck
+03/01/2020 17:50,#KillDaxos,Daedalus#59035,"Deck
 4 Fervent Champion (ELD) 124
 2 Infuriate (THB) 141
 4 Runaway Steam-Kin (GRN) 115
@@ -966,7 +966,7 @@ Sideboard
 1 Citywide Bust (GRN) 4
 2 Disenchant (M20) 14
 2 Unbreakable Formation (RNA) 29"
-3/1/2020 17:50:42,Cambridge Splinter Triplets,PSozzy#22285,"Deck
+03/01/2020 17:50,Cambridge Splinter Triplets,PSozzy#22285,"Deck
 36 Persistent Petitioners (RNA) 44
 24 Island (THB) 281",Chamber Jr#11962,"Deck
 1 Elspeth, Sun's Nemesis (THB) 14
@@ -1023,7 +1023,7 @@ Sideboard
 1 Lava Coil (GRN) 108
 4 Unchained Berserker (M20) 164
 3 Redcap Melee (ELD) 135"
-3/1/2020 17:55:37,Manchester Hive,Tobysaurus#28627,"3 Thassa's Intervention (THB) 72
+03/01/2020 17:55,Manchester Hive,Tobysaurus#28627,"3 Thassa's Intervention (THB) 72
 3 Quench (RNA) 48
 4 Frilled Mystic (RNA) 174
 2 Hydroid Krasis (RNA) 183
@@ -1096,7 +1096,7 @@ Sideboard
 1 Tibalt, Rakish Instigator (WAR) 146
 2 Experimental Frenzy (GRN) 99
 4 Redcap Melee (ELD) 135"
-3/1/2020 17:56:02,DMU Trackers,Tr3vology#95414,"Deck
+03/01/2020 17:56,DMU Trackers,Tr3vology#95414,"Deck
 4 Teferi, Time Raveler (WAR) 221
 3 Plains (MIR) 331
 7 Island (MIR) 336
@@ -1182,7 +1182,7 @@ Sideboard
 1 Tibalt, Rakish Instigator (WAR) 146
 2 Chandra, Acolyte of Flame (M20) 126
 4 Lava Coil (GRN) 108"
-3/1/2020 17:57:42,Kenteferi,Jamatt12#66804,"Deck
+03/01/2020 17:57,Kenteferi,Jamatt12#66804,"Deck
 4 Castle Embereth (ELD) 239
 4 Fervent Champion (ELD) 124
 18 Mountain (MIR) 346
@@ -1246,7 +1246,7 @@ Sideboard
 2 Wildborn Preserver (ELD) 182
 3 Negate (M20) 69
 2 Callous Dismissal (WAR) 44"
-3/1/2020 17:57:53,LJMU,Shippiddge#00708,"Deck
+03/01/2020 17:57,LJMU,Shippiddge#00708,"Deck
 5 Plains (THB) 250
 4 Shatter the Sky (THB) 37
 1 Kiora Bests the Sea God (THB) 52
@@ -1328,7 +1328,7 @@ Sideboard
 1 Experimental Frenzy (GRN) 99
 3 Redcap Melee (ELD) 135
 4 Unchained Berserker (M20) 164"
-3/1/2020 17:58:36,Swansea Storm,Jcg#00194,"Deck
+03/01/2020 17:58,Swansea Storm,Jcg#00194,"Deck
 4 Fervent Champion (ELD) 124
 4 Scorch Spitter (M20) 159
 4 Rimrock Knight (ELD) 137
@@ -1403,7 +1403,7 @@ Sideboard
 2 Casualties of War (WAR) 187
 2 Lovestruck Beast // Heart's Desire (ELD) 165
 "
-3/1/2020 18:01:05,Sheffield of Ruin,ArthurJP#67091,"Deck
+03/01/2020 18:01,Sheffield of Ruin,ArthurJP#67091,"Deck
 3 Nissa, Who Shakes the World (WAR) 169
 4 Growth Spiral (RNA) 178
 1 Thassa, Deep-Dwelling (THB) 71
@@ -1476,7 +1476,7 @@ Sideboard
 1 Chandra, Acolyte of Flame (M20) 126
 4 Unchained Berserker (M20) 164
 1 The Akroan War (THB) 124"
-3/1/2020 18:02:26,Oko for trade?,Greedylax#97056,"Deck
+03/01/2020 18:02,Oko for trade?,Greedylax#97056,"Deck
 4 Absorb (RNA) 151
 1 Archon of Sun's Grace (THB) 3
 2 Banishing Light (THB) 4
@@ -1559,7 +1559,7 @@ Sideboard
 2 Chandra, Acolyte of Flame (M20) 126
 1 Tibalt, Rakish Instigator (WAR) 146
 1 Experimental Frenzy (GRN) 99"
-3/1/2020 18:03:21,Protection From Reading,pihlk001#83162,"Deck
+03/01/2020 18:03,Protection From Reading,pihlk001#83162,"Deck
 3 Brazen Borrower (ELD) 39
 2 Hydroid Krasis (RNA) 183
 3 Uro, Titan of Nature's Wrath (THB) 229
@@ -1640,7 +1640,7 @@ Sideboard
 2 Spectral Sailor (M20) 76
 1 Heliod's Intervention (THB) 19
 "
-3/1/2020 18:03:23,TeamFirstPickBear,JonyMagic#20512,"Deck
+03/01/2020 18:03,TeamFirstPickBear,JonyMagic#20512,"Deck
 2 Dovin's Veto (WAR) 193
 4 Absorb (RNA) 151
 1 Dream Trawler (THB) 214
@@ -1729,7 +1729,7 @@ Sideboard
 1 Return to Nature (THB) 197
 1 Agonizing Remorse (THB) 83
 1 Sorcerous Spyglass (ELD) 233"
-3/1/2020 18:04:06,Failing Exepectations,bobbob49#01868,"Deck
+03/01/2020 18:04,Failing Exepectations,bobbob49#01868,"Deck
 4 Beanstalk Giant (ELD) 149
 1 Hypnotic Sprite (ELD) 49
 4 Brazen Borrower (ELD) 39
@@ -1822,7 +1822,7 @@ Sideboard
 1 Tibalt, Rakish Instigator (WAR) 146
 4 Unchained Berserker (M20) 164
 2 Claim the Firstborn (ELD) 118"
-3/1/2020 18:09:17,Avacyn,Velodramatic#38949,"Deck
+03/01/2020 18:09,Avacyn,Velodramatic#38949,"Deck
 4 The Birth of Meletis (THB) 5
 5 Plains (THB) 279
 2 Archon of Sun's Grace (THB) 3
@@ -1900,7 +1900,7 @@ Sideboard
 3 Redcap Melee (ELD) 135
 4 Unchained Berserker (M20) 164
 2 Tibalt, Rakish Instigator (WAR) 146"
-3/1/2020 18:11:50,Keele Leaf Champions,Hend0#51967,"Deck
+03/01/2020 18:11,Keele Leaf Champions,Hend0#51967,"Deck
 4 Brineborn Cutthroat (M20) 50
 1 Thornwood Falls (ELD) 313
 4 Essence Capture (RNA) 37
@@ -1989,7 +1989,7 @@ Sideboard
 2 Mystical Dispute (ELD) 58
 2 Narset, Parter of Veils (WAR) 61
 1 Elspeth, Sun's Nemesis (THB) 14"
-3/1/2020 18:14:12,Robbers of the 12k,ReservoirMog#34996,"Deck
+03/01/2020 18:14,Robbers of the 12k,ReservoirMog#34996,"Deck
 4 Absorb (RNA) 151
 2 Archon of Sun's Grace (THB) 3
 2 Banishing Light (THB) 4
@@ -2067,7 +2067,7 @@ Sideboard
 2 Negate (M20) 69
 2 Nightpack Ambusher (M20) 185
 3 Scorching Dragonfire (ELD) 139"
-3/1/2020 18:16:29,Bristol Dreadnought,blitzcrank#48790,"Deck
+03/01/2020 18:16,Bristol Dreadnought,blitzcrank#48790,"Deck
 4 Fervent Champion (ELD) 124
 4 Scorch Spitter (M20) 159
 4 Rimrock Knight (ELD) 137
@@ -2149,7 +2149,7 @@ Sideboard
 1 Ashiok, Dream Render (WAR) 228
 2 Murderous Rider (ELD) 97
 "
-3/1/2020 18:18:54,https://www.youtube.com/watch?v=CN_DjYDHEVU,Entropy#23181,"Deck
+03/01/2020 18:18,https://www.youtube.com/watch?v=CN_DjYDHEVU,Entropy#23181,"Deck
 1 Agonizing Remorse (THB) 83
 4 Dream Trawler (THB) 214
 4 Elspeth Conquers Death (THB) 13
@@ -2228,7 +2228,7 @@ Sideboard
 3 Mystical Dispute (ELD) 58
 2 Negate (M20) 69
 2 Nightpack Ambusher (M20) 185"
-3/1/2020 18:21:28,Team Strathy,RagingTiltMonster#81993,"2 Judith, the Scourge Diva (RNA) 185
+03/01/2020 18:21,Team Strathy,RagingTiltMonster#81993,"2 Judith, the Scourge Diva (RNA) 185
 4 Fabled Passage (ELD) 244
 4 Midnight Reaper (GRN) 77
 1 Temple of Malice (THB) 247
@@ -2311,7 +2311,7 @@ Sideboard
 1 Negate (RIX) 44
 1 Storm's Wrath (THB) 157
 1 Tamiyo, Collector of Tales (WAR) 220"
-3/1/2020 18:23:42,Edinburgh Eldrazi,SirSalty#98097,"Deck
+03/01/2020 18:23,Edinburgh Eldrazi,SirSalty#98097,"Deck
 4 Edgewall Innkeeper (ELD) 151
 7 Plains (ELD) 252
 4 Faerie Guidemother (ELD) 11
@@ -2398,7 +2398,7 @@ Sideboard
 4 Robber of the Rich (ELD) 138
 2 Dovin's Veto (WAR) 193
 3 Aether Gust (M20) 42"
-3/1/2020 18:24:51,Absolute Units,Mantle#28681,"Deck
+03/01/2020 18:24,Absolute Units,Mantle#28681,"Deck
 4 Cauldron Familiar (ELD) 81
 4 Gutterbones (RNA) 76
 4 Mayhem Devil (WAR) 204
@@ -2478,7 +2478,7 @@ Sideboard
 2 Chandra, Acolyte of Flame (M20) 126
 1 Tibalt, Rakish Instigator (WAR) 146
 1 Experimental Frenzy (GRN) 99"
-3/1/2020 18:26:52,Sheffield Steel Hellkites,Masterfull#18332,"Deck
+03/01/2020 18:26,Sheffield Steel Hellkites,Masterfull#18332,"Deck
 4 Fervent Champion (ELD) 124
 17 Mountain (ELD) 265
 4 Scorch Spitter (M20) 159
